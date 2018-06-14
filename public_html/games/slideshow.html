@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+			}
+			.container{
+				margin: 0 auto;
+				width: 300px;
+			}
+
+			/* navi */
+			nav ul{
+				padding: 0;
+				margin: 0;
+				list-style: none;
+			}
+			nav li{
+				float: left;
+				cursor: pointer;
+				opacity: 0.6;
+			}
+			nav li+li{
+				margin-left: 6px;
+			}
+			nav li:hover{
+				opacity: 1;
+			}
+			nav li.current{
+				opacity: 1;
+			}
+			nav img{
+				width: 45px;
+				height: 30px;
+			}
+
+			.main{
+				position: relative;
+			}
+			#prev, #next {
+				cursor: pointer;
+				font-size: 24px;
+				color: #bbb;
+				position: absolute;
+				top: 90px;
+			}
+			#prev{
+				left: -60px;
+			}
+			#next{
+				right: -60px;
+			}
+			#play, #pause{
+				display: inline-block;
+				width: 70px;
+				line-height: 30px;
+				text-align: center;
+				font-size: 12px;
+				color: #aaa;
+				border: 1px solid #aaa;
+				border-radius: 3px;
+				cursor: pointer;
+				float: right;
+			}
+			#play.hidden, #pause.hidden{
+				display: none;
+			}
+
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="main">
+					<img src="/images/demo/food0.jpg" width="300" heigth="200" id="target">
+					<l class="fa fa-chevron-circle-left" aria-hidden="true" id="prev"></l>
+					<l class="fa fa-chevron-circle-right" aria-hidden="true" id="next"></l>
+				</div>
+				<nav>
+					<ul id="thumnails"></ul>
+					<div id="play"><i class="fas fa-play" aria-hidden="true"></i> 再生</div>
+					<div id="pause" class="hidden"><i class="fas fa-pause" aria-hidden="true"></i> 停止</div>
+				</nav>
+
+			</div>
+		</div>
+		<script>
+			(function(){
+			    'use strict';
+			    var files = [
+			        '/images/demo/food0.jpg',
+			        '/images/demo/food1.jpg',
+			        '/images/demo/food2.jpg',
+			        '/images/demo/food3.jpg',
+				];
+			    var currentNum = 0;
+                var target = document.getElementById('target');
+			    var prev = document.getElementById('prev');
+                var next = document.getElementById('next');
+                var thumnails = document.getElementById('thumnails');
+                var play = document.getElementById('play');
+                var pause = document.getElementById('pause');
+                var timer;
+                var isPlaying = false;
+
+                var SLIDESHOW_DURATION = 500;
+                var CLASS_CURRENT = 'current';
+                var CLASS_HIDDEN = 'hidden';
+                var CLASS_NONE = '';
+
+
+                function createThumnails(){
+                    var i, li, img;
+                    for(i=0; i<files.length; i++){
+                        li = document.createElement('li');
+                        // li.setAttribute('data-index', i);
+						li.dataset.index = i;
+                        img = document.createElement('img');
+                        img.src = files[i];
+                        li.addEventListener('click', function(){
+                            target.src = this.children[0].src;
+                            thumnails.children[currentNum].className = '';
+                            currentNum = this.dataset.index;
+                            this.className = CLASS_CURRENT;
+						})
+                        li.appendChild(img);
+                        document.getElementById('thumnails').appendChild(li);
+					}
+				}
+				createThumnails();
+                thumnails.children[currentNum].className = CLASS_CURRENT;
+
+			    prev.addEventListener('click', function(){
+			        thumnails.children[currentNum].className = '';
+			        currentNum--;
+			        if(currentNum<0){
+			            currentNum = files.length-1;
+					}
+                    thumnails.children[currentNum].className = CLASS_CURRENT;
+					target.src = files[currentNum];
+				});
+                next.addEventListener('click', function(){
+                    thumnails.children[currentNum].className = '';
+                    currentNum++;
+                    if(currentNum>files.length-1){
+                        currentNum = 0;
+                    }
+                    thumnails.children[currentNum].className = CLASS_CURRENT;
+                    target.src = files[currentNum];
+                });
+                play.addEventListener('click', function(){
+                    if(isPlaying===true){
+                        return;
+                    }                   playSlideshow();
+                    play.className = CLASS_HIDDEN;
+                    pause.className = CLASS_NONE;
+                    isPlaying = true;
+                });
+                pause.addEventListener('click', function(){
+                    isPlaying = false;
+                    clearTimeout(timer);
+                    play.className = CLASS_NONE;
+                    pause.className = CLASS_HIDDEN;
+                });
+                function playSlideshow(){
+                    timer = setTimeout(function(){
+                        next.click();
+                        playSlideshow();
+					}, SLIDESHOW_DURATION);
+				}
+			})();
+		</script>
+	</body>
+</html>
+

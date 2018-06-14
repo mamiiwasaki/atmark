@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=0" />
+    <title>Reversi</title>
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="fnt/ArchivoBlack.css" />
+  <!-- game -->
+    <script src="js/game.canvas.js"></script>
+    <script src="js/game.core.js"></script>
+  <!-- resouce -->
+    <script src="js/resouce.image.js"></script>
+  <!-- init -->
+    <script>
+	$(function() {
+		// リソース（画像）の読み込み
+		var r = [];
+		r.push(resouce.image.load("_tkn0", "img/token0.png"));
+
+		// 読み込み待機
+		$.when.apply($, r).then(function() {
+			// 縦横比固定でキャンバス作成
+			var sz = game.core.getFitSz(10, 11)
+			var c = game.canvas.initCnvs("reversi", sz.w, sz.h);
+
+			// 全面色塗り
+			c.cntx.fillStyle = "#aff";
+			c.cntx.fillRect(0, 0, c.w, c.h);
+
+			// 変数の初期化
+			var imgTknSrc = resouce.image.imgs._tkn0;
+			var srcW = imgTknSrc.width;
+			var srcH = imgTknSrc.height;
+			var dstW = srcW / 3 | 0;
+			var dstH = srcH / 3 | 0;
+
+			// 1/3サイズ描画
+			c.cntx.drawImage(imgTknSrc, 0, 0, srcW, srcH,
+				0, (c.h - dstH) / 2, dstW, dstH);
+
+			// 1/3サイズ生成 描画
+			var imgTknGen = game.canvas.getScaledImg(
+				imgTknSrc, 0, 0, srcW, srcH, dstW, dstH);
+			c.cntx.drawImage(imgTknGen, dstW, (c.h - dstH) / 2);
+		});
+	});
+    </script>
+  </head>
+  <body>
+    <div id="reversi"></div>
+  </body>
+</html>

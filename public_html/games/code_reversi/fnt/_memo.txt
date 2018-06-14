@@ -1,0 +1,22 @@
+Font
+	Handpicked free fonts for graphic designers with commercial-use licenses. | Font Squirrel
+	https://www.fontsquirrel.com/
+	Find Free Fonts | Font Squirrel
+	https://www.fontsquirrel.com/fonts/list/find_fonts?filter%5Blicense%5D%5B0%5D=app
+	Archivo Black Font Free by Omnibus Type | Font Squirrel
+	https://www.fontsquirrel.com/fonts/archivo-black?filter%5Blicense%5D%5B0%5D=app
+
+WOFFConverter
+	武蔵システム | フォント・外字ソフトのことなら武蔵システム
+	http://opentype.jp/
+	WOFFコンバータ
+	http://opentype.jp/woffconv.htm
+
+
+
+
+
+
+
+
+

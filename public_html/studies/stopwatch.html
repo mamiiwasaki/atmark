@@ -1,0 +1,274 @@
+	<!DOCTYPE HTML>
+	<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		___HIGHT_JS___
+		<style>
+			.btn_active{
+				background-color: #FF7A90;
+				border: 1px solid #FFE5DA;
+				padding: 7px;
+				margin: 3px;
+				border-radius:5px;
+				cursor: pointer;
+			}
+			.btn_disabled{
+				background-color: #FFE5DA;
+				cursor: auto;
+				color: white;
+			}
+			#clock{
+				border: 2px solid #FFE5DA;
+				padding: 20px;
+				margin: 50px;
+				text-align: center;
+				font-size: 30px;
+				border-radius: 10px;
+			}
+		</style>
+	</head>
+	<body>
+
+	<!-- Header -->
+	<div id="header2">
+		<div id="nav-wrapper">
+			<!-- Nav -->
+			<nav id="nav">
+				___NAVI___
+			</nav>
+		</div>
+	</div>
+	<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row quarter">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">ストップウォッチ</span>
+							</header>
+							<div width="300px">
+								<div id="clock">00:00:00.00</div>
+								<div style="text-align: center;">
+									<span class="btn_active" id="btn_start">start</span>
+									<span class="btn_active btn_disabled" id="btn_stop">stop</span>
+									<span class="btn_active btn_disabled" id="btn_restart">restart</span>
+									<span class="btn_active btn_disabled" id="btn_reset">reset</span>
+								</div>
+							</div>
+							<div class="sourceview">
+								<pre class="brush: html;">
+									&lt;div width=&quot;300px&quot;&gt;
+									&lt;div id=&quot;clock&quot;&gt;00:00:00.00&lt;/div&gt;
+									&lt;div style=&quot;text-align: center;&quot;&gt;
+										&lt;span class=&quot;btn_active&quot; id=&quot;btn_start&quot;&gt;start&lt;/span&gt;
+										&lt;span class=&quot;btn_active btn_disabled&quot; id=&quot;btn_stop&quot;&gt;stop&lt;/span&gt;
+										&lt;span class=&quot;btn_active btn_disabled&quot; id=&quot;btn_restart&quot;&gt;restart&lt;/span&gt;
+										&lt;span class=&quot;btn_active btn_disabled&quot; id=&quot;btn_reset&quot;&gt;reset&lt;/span&gt;
+									&lt;/div&gt;
+									&lt;/div&gt;
+								</pre>
+							</div>
+
+							</pre>
+							<pre class="brush: css;">
+								.btn_active{
+									background-color: #FF7A90;
+									border: 1px solid #FFE5DA;
+									padding: 7px;
+									margin: 3px;
+									border-radius:5px;
+									cursor: pointer;
+								}
+								.btn_disabled{
+									background-color: #FFE5DA;
+									cursor: auto;
+									color: white;
+								}
+								#clock{
+									border: 2px solid #FFE5DA;
+									padding: 20px;
+									margin: 50px;
+									text-align: center;
+									font-size: 30px;
+									border-radius: 10px;
+								}
+							</pre>
+
+
+<pre class="brush: js">
+var h=0;
+var m=0;
+var s=0;
+var ms=0;
+var timer_id ;
+var clock = document.getElementById('clock');
+var btn_start = document.getElementById('btn_start');
+var btn_stop = document.getElementById('btn_stop');
+var btn_restart = document.getElementById('btn_restart');
+var btn_reset = document.getElementById('btn_reset');
+
+// start
+btn_start.addEventListener('click', function(){
+	if(this.classList.contains('btn_disabled')){
+		return;
+	}
+	timer_id = setInterval(countup, 10);
+	this.classList.add('btn_disabled');
+	btn_stop.classList.remove('btn_disabled');
+	btn_reset.classList.remove('btn_disabled');
+});
+// stop
+btn_stop.addEventListener('click', function(){
+	if(this.classList.contains('btn_disabled')){
+		return;
+	}
+	clearInterval(timer_id);
+	this.classList.add('btn_disabled');
+	btn_restart.classList.remove('btn_disabled');
+});
+// restart
+btn_restart.addEventListener('click', function(){
+	if(this.classList.contains('btn_disabled')){
+		return;
+	}
+	timer_id = setInterval(countup, 10);
+	this.classList.add('btn_disabled');
+	btn_stop.classList.remove('btn_disabled');
+});
+// reset
+btn_reset.addEventListener('click', function(){
+	if(this.classList.contains('btn_disabled')){
+		return;
+	}
+	h=0;
+	m=0;
+	s=0;
+	sf=0;
+	clock.innerHTML = zeroume(h)+':'+zeroume(m)+':'+zeroume(s)+'.'+zeroume(sf);
+	clearInterval(timer_id);
+	this.classList.add('btn_disabled');
+	btn_stop.classList.add('btn_disabled');
+	btn_restart.classList.add('btn_disabled');
+	btn_start.classList.remove('btn_disabled');
+});
+// countup
+function countup(){
+	ms++;
+	if(ms>99){
+		s++;
+		ms=0;
+	}
+	if(s>59){
+		m++;
+		s=0;
+	}
+	if(m>59){
+		h++;
+		m=0;
+	}
+	clock.innerHTML = zeroume(h)+':'+zeroume(m)+':'+zeroume(s)+'.'+zeroume(ms);
+}
+// ゼロ埋め
+function zeroume(t){
+	return ('0'+t).slice(-2);
+}
+</pre>
+
+
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+	var h=0;
+	var m=0;
+	var s=0;
+	var ms=0;
+	var timer_id ;
+	var clock = document.getElementById('clock');
+	var btn_start = document.getElementById('btn_start');
+	var btn_stop = document.getElementById('btn_stop');
+	var btn_restart = document.getElementById('btn_restart');
+	var btn_reset = document.getElementById('btn_reset');
+
+	// start
+	btn_start.addEventListener('click', function(){
+		if(this.classList.contains('btn_disabled')){
+			return;
+		}
+		timer_id = setInterval(countup, 10);
+		this.classList.add('btn_disabled');
+		btn_stop.classList.remove('btn_disabled');
+		btn_reset.classList.remove('btn_disabled');
+	});
+	// stop
+	btn_stop.addEventListener('click', function(){
+		if(this.classList.contains('btn_disabled')){
+			return;
+		}
+		clearInterval(timer_id);
+		this.classList.add('btn_disabled');
+		btn_restart.classList.remove('btn_disabled');
+	});
+	// restart
+	btn_restart.addEventListener('click', function(){
+		if(this.classList.contains('btn_disabled')){
+			return;
+		}
+		timer_id = setInterval(countup, 10);
+		this.classList.add('btn_disabled');
+		btn_stop.classList.remove('btn_disabled');
+	});
+	// reset
+	btn_reset.addEventListener('click', function(){
+		if(this.classList.contains('btn_disabled')){
+			return;
+		}
+		h=0;
+		m=0;
+		s=0;
+		sf=0;
+		clock.innerHTML = zeroume(h)+':'+zeroume(m)+':'+zeroume(s)+'.'+zeroume(sf);
+		clearInterval(timer_id);
+		this.classList.add('btn_disabled');
+		btn_stop.classList.add('btn_disabled');
+		btn_restart.classList.add('btn_disabled');
+		btn_start.classList.remove('btn_disabled');
+	});
+	// countup
+	function countup(){
+		ms++;
+		if(ms>99){
+			s++;
+			ms=0;
+		}
+		if(s>59){
+			m++;
+			s=0;
+		}
+		if(m>59){
+			h++;
+			m=0;
+		}
+		clock.innerHTML = zeroume(h)+':'+zeroume(m)+':'+zeroume(s)+'.'+zeroume(ms);
+	}
+	// ゼロ埋め
+	function zeroume(t){
+		return ('0'+t).slice(-2);
+	}
+</script>

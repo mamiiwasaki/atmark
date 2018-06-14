@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;		/* 選択させない */
+			}
+			#main{
+				height: 100%;
+			}
+			#game{
+				width: 300px;
+				margin: 30px auto 0;	/* 上30px, 中央寄せ */
+			}
+			#target, #result{
+				background: #646464;
+				color: #fff;
+				font-size: 32px;
+				padding: 5px 0 ;
+				width: 200px;
+				height: 60px;
+				line-height: 60px;		/* 高さと同じにすることで真ん中に */
+				padding-left: 5px;
+				margin-bottom: 15px;
+				margin: 0 auto;
+				text-align: center;
+			}
+			#target+#result{
+				margin-top: 5px;
+			}
+			#start, #stop{
+				margin-top: 15px;
+				width: 130px;
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 20px;
+				color: #fff;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			#start{
+				background: #eb939a;
+				float: left;	/* 左寄せ */
+			}
+			#stop{
+				background: #5186b7;
+				float: right;	/* 右寄せ */
+			}
+			.pushed{
+				margin-top: 18px;
+				opacity: 0.8;
+			}
+			#result.good{
+				background: #ebdb8d;
+			}
+			#result.standby{
+				opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="game">
+					<div id="target">5.000</div>
+					<div id="result">0.000</div>
+					<div>
+						<div id="start">start</div>
+						<div id="stop">stop</div>
+					</div>
+					<div id="diff"></div>
+				</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+				var start = document.getElementById('start');
+				var stop = document.getElementById('stop');
+				var result = document.getElementById('result');
+				var diff = document.getElementById('diff');
+				var startTime;
+				var isStarted = false;
+
+				start.addEventListener('click', function(){
+					if(isStarted===true){
+						return;
+					}
+					result.className = 'standby';
+					startTime = Date.now();
+					result.innerHTML = '0.000';
+					diff.innerHTML = '';
+					start.className = 'pushed';
+					stop.className = '';
+					isStarted = true;
+				});
+				stop.addEventListener('click', function(){
+					if(isStarted===false){
+						return;
+					}
+					result.className = '';
+					var elaTime, diffTime;
+					elaTime = (Date.now() - startTime)/1000;
+					result.innerHTML = elaTime.toFixed(3);
+					diffTime = (elaTime - 5.0);
+					diff.innerHTML = diffTime.toFixed(3);
+					// judge
+					if(diffTime<1.0 && diffTime>-1.0){
+						result.className = 'good';
+					}
+					start.className = '';
+					stop.className = 'pushed';
+					isStarted = false;
+
+				});
+
+			})();
+		</script>
+	</body>
+</html>
+

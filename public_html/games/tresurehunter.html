@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+				background: #000;
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+			}
+			.container{
+				width: 335px;
+				margin: 30px auto;
+			}
+			#boxes{
+				font-size: 0;
+				margin-bottom: 40px;
+				cursor: pointer;
+			}
+			.box{
+				width: 80px;
+				height: 100px;
+			}
+			.box+.box{
+				margin-left: 40px;
+			}
+			.shake:hover{
+				animation-name: shake;
+				animation-duration: .2s;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+			}
+			.disabled{
+				opacity: 0.5;
+				cursor: auto;
+			}
+
+			@keyframes shake{
+				0%{ transform: rotate(8deg) translate(1px, 0);}
+				50%{transform: rotate(-8deg) translate(-1px, 0);}
+				100%{transform: rotate(8deg) translate(1px, 0);}
+			}
+
+			#btn{
+				text-decoration: none;
+				display: block;
+				width: 335px;
+				height: 40px;
+				border: 1px solid #fff;
+				color: #fff;
+				font-weight: bold;
+				line-height: 40px;
+				text-align: center;
+				border-radius: 5px;
+			}
+			#btn.inactive{
+				opacity: 0.2;
+				cursor: default;
+			}
+
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="boxes">
+					<img src="/images/games/box.png" class="box shake">
+					<img src="/images/games/box.png" class="box shake">
+					<img src="/images/games/box.png" class="box shake">
+				</div>
+				<a href="" id="btn" class="inactive">restart</a>
+			</div>
+		</div>
+		<script>
+			(function(){
+			    'use strict';
+			    var boxes = document.getElementsByClassName('box');
+			    var images = [
+			        'box_coin.png',
+			        'box_empty.png',
+			        'box_cobra.png',
+				];
+
+			    function init(){
+			        var i;
+			        for(i=0; i<boxes.length; i++){
+			            boxes[i].addEventListener('click', function(){
+							var j;
+							if(this.className.indexOf('shake')===-1){
+							    return;
+							}
+							for(j=0; j<boxes.length; j++){
+                                boxes[j].src = '/images/games/'+images[Math.floor(Math.random()*images.length)];
+                                boxes[j].className = 'box disabled';
+							}
+			               this.className = 'box';
+							document.getElementById('btn').className = '';
+						});
+					}
+				}
+				init();
+			})();
+		</script>
+	</body>
+</html>
+

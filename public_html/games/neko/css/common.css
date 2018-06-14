@@ -1,0 +1,94 @@
+@charset "utf-8";
+/*------------------------------------------------------------------------
+ * reset
+ *------------------------------------------------------------------------*/
+html, body, div, span {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+html {
+	/*overflow-y: scroll;*/
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+button  {
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: none;
+	border-radius: 0;
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	font-size: 100%;
+}
+input[type="button"],input[type="submit"] {
+    -webkit-appearance: none;
+}
+ol, ul {
+	list-style: none;
+}
+
+select{
+	font-size:12px;
+}
+input{
+	padding-top:4px;
+	padding-bottom:4px;
+	font-size:18px;
+	padding-left:4px;
+	padding-right:4px;
+}
+textarea{
+	font-size:16px;
+}
+
+.mb0 {
+	margin-bottom: 0 !important;
+}
+#ui-datepicker-div {
+	z-index: 99 !important;
+}
+/*------------------------------------------------------------------------
+ * common
+ *------------------------------------------------------------------------*/
+html, body {
+	height: 100%;
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+	color: #666;
+	font-size: 14px;
+	position: relative;
+	background-color:#FFF;
+	
+		background: -webkit-gradient(linear, left top, right bottom, from(#AAA), color-stop(0.25, #AAA), color-stop(0.25, white), color-stop(0.5, white), color-stop(0.5, #ddd), color-stop(0.75, #ddd), color-stop(0.75, white), to(white));
+background: -moz-linear-gradient(-45deg, #EEE 25%, white 25%, white 50%, #EEE 50%, #EEE 75%, white 75%, white);
+background: linear-gradient(-45deg, #EEE 25%, white 25%, white 50%, #EEE 50%, #EEE 75%, white 75%, white);
+background-size: 4px 4px;
+}
+
+pre, code, var, samp, kbd, .mono {
+/*    font-family: Consolas, 'Courier New', Courier, Monaco, monospace;*/
+    font-family: Monaco, monospace;
+    font-size: 14px;
+    line-height: 1.2;
+	font-weight:100;
+}
+
+
+/* end of text */

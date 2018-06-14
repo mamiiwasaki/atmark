@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+			}
+			#container{
+				font-family: Arial, sans-serif;
+				font-weight: bold;
+				font-size: 16px;
+			}
+			#slot{
+				background: #fff2cc;
+				width: 350px;
+				padding: 20px;
+				border-radius: 15px;
+				margin: 15px auto;	/* top 15px, 中央に並べる */
+				overflow: auto;	/* 内容がはみ出たら伸ばす */
+				border: 5px solid #ffe599;
+			}
+			.pannel{
+				float: left;	/* 横に並べる */
+			}
+			.pannel + .pannel{
+				margin-left: 12px;
+			}
+			.pannel img{
+				margin-bottom: 15px;
+				width: 90px;
+				height: 110px;
+			}
+			.stop{
+				cursor: pointer;
+				width: 90px;
+				height: 30px;
+				line-height: 30px;	/* 高さと同じにすることで真ん中に */
+				background: #ef454a;
+				box-shadow: 0 3px 0 #d148de;
+				border-radius: 16px;
+				text-align: center;
+				font-size: 14px;
+				color: #fff;
+				user-select: none;	/* 選択させない */
+			}
+			#spin{
+				cursor: pointer;
+				width: 280px;
+				height: 35px;
+				background: #3498db;
+				box-shadow: 0 3px 0 #2880b9;
+				border-radius: 16px;
+				line-height: 30px;
+				text-align: center;
+				color: #fff;
+				user-select: none;	/*  */
+				margin: 0 auto;	/* 中央揃え */
+			}
+			.unmatched{
+				opacity: 0.4;
+			}
+			.inactive{
+				opacity: 0.5;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="slot">
+					<div class="pannel">
+						<img src="/images/slot/seven.png">
+						<div class="stop inactive" data-index="0">stop</div>
+					</div>
+					<div class="pannel">
+						<img src="/images/slot/seven.png">
+						<div class="stop inactive" data-index="1">stop</div>
+					</div>
+					<div class="pannel">
+						<img src="/images/slot/seven.png">
+						<div class="stop inactive" data-index="2">stop</div>
+					</div>
+				</div>
+				<div id="spin">すろっと</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+
+				var pannels = document.getElementsByClassName('pannel');
+				var spin = document.getElementById('spin');
+				var IMG_PATH = '/images/slot/';
+				var cards = [
+					'seven.png',
+					'cherry.png',
+
+					'bar.png',
+					'orange.png'
+				];
+                // 'suika.png',
+                //     'plum.png',
+                //     'remon.png',
+                //     'banana.png',
+                //     'bigwin.png',
+				var timers = [];
+				var setCount = 0;
+
+				initPannel();
+				function initPannel(){
+					for(var i=0; i<pannels.length; i++){
+						pannels[i].children[1].addEventListener('click', function(){
+							if(this.className.indexOf('inactive')!==-1){
+								return;
+							}
+							setCount++;
+							clearTimeout(timers[this.dataset.index]);
+							this.className = 'stop inactive';
+							if(setCount===pannels.length){
+								setCount = 0;
+								checkResult();
+								spin.className = '';
+							}
+						});
+					}
+				}
+
+				spin.addEventListener('click', function(){
+					if(this.className.indexOf('inactive')!==-1){
+						return;
+					}
+					this.className = 'inactive';
+					for(var i=0; i<pannels.length; i++){
+						runSlot(i);
+						pannels[i].children[1].className = 'stop';
+						pannels[i].children[0].className = '';
+					}
+				});
+
+				function runSlot(n){
+					timers[n] = setTimeout(function(){
+						pannels[n].children[0].src = IMG_PATH+cards[Math.floor(Math.random()*cards.length)];
+						runSlot(n);
+					}, 350);	// 50
+				}
+				function checkResult(){
+					var img0 = pannels[0].children[0];
+					var img1 = pannels[1].children[0];
+					var img2 = pannels[2].children[0];
+					if(img0.src!==img1.src&&img0.src!==img2.src){
+						img0.className='unmatched';
+					}
+
+					if(img0.src!==img1.src && img0.src!==img2.src){
+						img0.className = 'unmatched';
+					}
+					if(img1.src!==img0.src && img1.src!==img2.src){
+						img1.className = 'unmatched';
+					}
+					if(img2.src!==img0.src && img2.src!==img1.src){
+						img2.className = 'unmatched';
+					}
+				}
+			})() ;
+		</script>
+	</body>
+</html>

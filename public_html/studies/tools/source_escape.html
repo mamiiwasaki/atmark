@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Header -->
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">HTMLエンコード置換変換</span>
+							</header>
+							<P>HTMLで<strong style="color: red;">&lt; &amp; &quot; &gt;</strong>を <strong style="color: navy;">&amp;lt; &amp;amp; &amp;quot; &amp;gt;</strong> にエスケープ・エンコード、WEB用に置換変換。</p>
+
+							<span>変換前のテキスト</span>
+							<textarea rows="6" cols="98" id="beforeStr"></textarea>
+
+							<div style="width: 900px;">
+								<label for="wq" class="quo"><input type="checkbox" name="wq" id="wq" tabindex="2" checked="checked" />&quot;&amp;quot;&quot;</label>
+								<label for="sq" class="quo"><input type="checkbox" name="sq" id="sq" tabindex="3" checked="checked" />&#039;&amp;#039;&#039;</label>
+								<label for="tab_ind"><input type="checkbox" name="tab_ind" id="tab_ind" tabindex="4" checked="checked" />tab半角indent</label>
+								<label for="pre_class"><input type="checkbox" name="pre_class" id="pre_class" tabindex="5" checked="checked" />div,pre追加</label>
+								<label for="br_n"><input type="checkbox" name="br_n" id="br_n" tabindex="6" checked="checked" />\n改行反映</label>
+								<label for="num"><input type="checkbox" name="num" id="num" tabindex="16" />半角数字に</label>
+							</div>
+							<div style="width: 900px;">
+								<div style="clear: both;"></div>
+								<label for="br"><input type="radio" name="br" id="br" tabindex="7" checked="checked" />&lt;br&gt;&lt;br /&gt;を変換</label>
+								<label for="br_ch1"><input type="radio" name="br" id="br_ch1" tabindex="8" />&lt;br&gt;&rArr;\n改行</label>
+								<label for="br_none"><input type="radio" name="br" id="br_none" tabindex="9" />&lt;br&gt;削除</label>
+								<label for="br_ch2"><input type="radio" name="br" id="br_ch2" tabindex="10" />&lt;br&gt;反映</label>
+								<label for="br_ch3"><input type="radio" name="br" id="br_ch3" tabindex="11" />&lt;br /&gt;反映</label>
+								<br>
+								<label for="br_ch4"><input type="radio" name="br" id="br_ch4" tabindex="12" />\n改行&rArr;&lt;br&gt;\n</label>
+								<label for="br_ch5"><input type="radio" name="br" id="br_ch5" tabindex="13" />\n改行&rArr;&lt;br /&gt;\n</label>
+								<label for="br_ch6"><input type="radio" name="br" id="br_ch6" tabindex="14" />\n改行&rArr;&lt;br&gt;</label>
+								<label for="br_ch7"><input type="radio" name="br" id="br_ch7" tabindex="15" />\n改行&rArr;&lt;br /&gt;</label>
+							</div>
+							<input type="button" class="button" value="変換する" onclick="sourceEscape()" onkeypress="void(0);" />　
+
+							<hr>
+
+							<span>変換後のテキスト</span>
+							<textarea rows="6" cols="98" id="afterStr"></textarea>
+							オプション２　　　<small>※ 重複設定に注意　多量のスペースや改行は自動削除</small>
+							<div style="width: 900px;">
+								<label for="br_collapse"><input type="checkbox" name="br_collapse" id="br_collapse" tabindex="20" checked="checked" />空行を削除</label>
+								<label for="space_no"><input type="checkbox" name="space_no" id="space_no" tabindex="21" checked="checked" />カンマ前後に空白削除</label>
+								<label for="br_ch8"><input type="checkbox" name="br_ch8" id="br_ch8" tabindex="22" />\n改行&rArr;カンマ</label>
+								<label for="br_ch10"><input type="checkbox" name="br_ch10" id="br_ch10" tabindex="23" checked="checked" />連続カンマ&rArr;１個</label>
+								<label for="br_end"><input type="checkbox" name="br_end" id="br_end" tabindex="24" checked="checked" />最後のカンマを削除</label>
+								<label for="br_ch9"><input type="checkbox" name="br2" id="br_ch9" tabindex="25" />カンマ&rArr;\n改行</label>
+
+								<label for="br_ch11"><input type="checkbox" name="br2" id="br_ch11" tabindex="26" />全空スペース&rArr;半角</label>
+								<label for="br_ch12"><input type="checkbox" name="br2" id="br_ch12" tabindex="27" />全空スペース&rArr;削除</label>
+							</div>
+							<input type="button" class="button" value="変換する" onclick="sourceEscape2()" />
+						http://www.netyasun.com/syntaxhighlighter/source-escape.html#REPLACE＜
+							https://lab.syncer.jp/Tool/JavaScript-PrettyPrint/
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+function getId(id){
+	return document.getElementById(id);
+}
+
+function sourceEscape(){
+	location.href = "#REPLACE";
+	str = getId("beforeStr").value;
+	str = str.replace(/&/g, "&amp;");
+	str = str.replace(/</g, "&lt;");
+	str = str.replace(/>/g, "&gt;");
+	str = str.replace(/^(\r\n)+|^(\n\r)+|^(\r)+|^(\n)+|(\r\n)+$|(\n\r)+$|(\r)+$|(\n)+$/gi, "");
+	str = str.replace(/(\r\n){8,}|(\n\r){8,}|(\r){8,}|(\n){8,}|(\s){40,}/gi, "\n");
+	str = str.replace(/[　\u3000	\t]{20,}|( ){34,}/gi, " ");
+
+	if(getId("wq").checked===true){
+		str = str.replace(/"/g, "&quot;");
+	}
+	if(getId("sq").checked===true){
+		str = str.replace(/'/g, "&#039;");
+	}
+	if(getId("tab_ind").checked===true){
+		str = str.replace(/\t/g, "    ");
+	}
+	if(getId("br_n").checked===false){
+		str = str.replace(/\r\n|\n\r|\n|\r/g, "");
+	}
+	if(getId("br_ch1").checked===true){
+		str = str.replace(/(&lt;br&gt;)|(&lt;br \/&gt;)|(&lt;br\/&gt;)/gi, "\n");
+	}
+	if(getId("br_ch2").checked===true){
+		str = str.replace(/&lt;br&gt;/gi, "<br>");
+	}
+	if(getId("br_ch3").checked===true){
+		str = str.replace(/&lt;br \/&gt;/gi, "<br />");
+	}
+	if(getId("br_ch4").checked===true){
+		str = str.replace(/\r\n|\n\r|\n|\r/g, "<br>\n");
+	}
+	if(getId("br_ch5").checked===true){
+		str = str.replace(/\r\n|\n\r|\n|\r/g, "<br />\n");
+	}
+	if(getId("br_ch6").checked===true){
+		str = str.replace(/\r\n|\n\r|\n|\r/g, "<br>");
+	}
+	if(getId("br_ch7").checked===true){
+		str = str.replace(/\r\n|\n\r|\n|\r/g, "<br />");
+	}
+	if(getId("br_none").checked===true){
+		str = str.replace(/(&lt;br&gt;)|(&lt;br \/&gt;)|(&lt;br\/&gt;)/gi, "");
+	}
+	if(getId("num").checked===true){
+		str = str.replace(/([Ａ-Ｚａ-ｚ０-９＿])/g,
+    function ($0) {
+      return String.fromCharCode($0.charCodeAt(0) - 65248);
+    });
+	}
+
+
+	if(getId("pre_class").checked===true){
+		getId("afterStr").value = "<pre class=\"brush: html;\">\n" + str + "\n</pre>";
+	}else{
+		getId("afterStr").value = str;
+	}
+}
+
+function sourceEscape2(){
+	str = getId("afterStr").value;
+	str = str.replace(/(^\r\n$)|(^\n\r$)|^\r$|^\n$/gi, "");
+	str = str.replace(/(\r\n){8,}|(\n\r){8,}|(\r){8,}|(\n){8,}|(\s){40,}/gi, "\n");
+	str = str.replace(/[　\u3000	\t]{20,}|( ){34,}/gi, " ");
+
+	if(getId("br_collapse").checked===true){
+		str = str.replace(/(\r\n){2,}|(\n\r){2,}|(\r){2,}|(\n){2,}/gi, "\n");
+	}
+	if(getId("space_no").checked===true){
+		str = str.replace(/(([ \t　	]+),([ \t　	]+))/gi, ",");
+	}
+	if(getId("br_ch8").checked===true){
+		str = str.replace(/(\r\n)+|(\n\r)+|\r+|\n+/gi, ",");
+	}
+	if(getId("br_end").checked===true){
+		str = str.replace(/,$/g, "");
+	}
+	if(getId("br_ch9").checked===true){
+		str = str.replace(/,/g, "\n");
+	}
+	if(getId("br_ch10").checked===true){
+		str = str.replace(/,+/g, ",");
+	}
+	if(getId("br_ch11").checked===true){
+		str = str.replace(/\t+|(	)+|( )+|(　)+|(\u3000)+|[　\u3000	\t ]/gi, " ");
+	}
+	if(getId("br_ch12").checked===true){
+		str = str.replace(/\t+|(	)+|( )+|(　)+|(\u3000)+|[　\u3000	\t ]/gi, "");
+	}
+	getId("aft").style.display = "block";
+	getId("afterStr").value = str;
+}
+
+</script>

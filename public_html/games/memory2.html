@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+				background: #3498db;
+				font-size: 16px;
+				font-weight: bold;
+			}
+			.container{
+				width: 360px;
+				margin: 20px auto;
+			}
+			#stage{
+				display: flex;
+				flex-wrap: wrap;
+			}
+
+
+			.card-container{
+				float: left;
+				perspective: 100px;
+				width: 50px;
+				height: 70px;
+				margin: 5px;
+			}
+			.card{
+				cursor: pointer;
+				width: 100%;
+				height: 100%;
+				position: relative;
+				transition: 0.8s;
+				transform-style: preserve-3d;
+			}
+			.card_front, .card_back{
+				width: 100%;
+				height: 100%;
+				line-height: 70px;
+				text-align: center;
+				border-radius: 8px;
+				position: absolute;
+				top: 0;
+				left:0;
+				backface-visibility: hidden;
+				box-shadow: 0 5px 0 #007fbb;
+			}
+			.card_back{
+				background: #f1c40f;
+				color: #fff;
+			}
+			.card_front{
+				background: #fff;
+				color: #f1c40f;
+				transform: rotateY(180deg);
+			}
+			.card.open{
+				transform: rotateY(180deg);
+			}
+			#score{
+				font-size: 20px;
+				color: #fff;
+				text-align: right;
+				margin: 0 5px 10px 0;
+			}
+			#restart{
+				text-decoration: none;
+				display: block;	/* 横いっぱいに広がるように */
+				background: #2ecc71;
+				color: #fff;
+				height: 40px;
+				border-radius: 20px;
+				text-align: center;
+				line-height: 40px;
+				font-size: 18px;
+				margin-top: 15px;
+				box-shadow: 0 5px 0 #007fbb;
+			}
+			.inactive{
+				cursor: default;
+				opacity: 0.4;
+				box-shadow: none;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="score">0.00</div>
+				<div id="stage"></div>
+				<a href="" id="restart" class="inactive">restart</a>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+				var pairs = 2;
+				var cards = [];
+				var card;
+				var flipCount = 0;
+				var firstCard=null;
+				var secondCard=null;
+				var startTime=null;
+				var timer;
+				var correctCount=0;
+				var setCount=0;
+
+				function init(){
+					for(var i=1; i<=pairs; i++){
+						cards.push(createCard(i));
+						cards.push(createCard(i));
+					}
+					while(cards.length){
+						card = cards.splice(Math.floor(Math.random()*cards.length), 1)[0];
+						document.getElementById('stage').appendChild(card);
+					}
+				}
+				function createCard(num){
+						var container;
+						var card;
+						var inner;
+						inner = '<div class="card_front">'+num+'</div><div class="card_back">?</div>';
+						card = document.createElement('div');
+						card.className = 'card';
+						card.innerHTML = inner;
+						card.addEventListener('click', function(){
+							flipCard(this);
+						});
+						container = document.createElement('div');
+						container.className = 'card-container';
+						container.appendChild(card);
+						return container;
+				}
+
+				function flipCard(card){
+					if(firstCard!==null && secondCard!==null){
+						return;
+					}
+					if(card.className.indexOf('open')!==-1){
+						return;
+					}
+					card.className = 'card open';
+					flipCount++;
+					if(flipCount%2===1){
+						firstCard = card;
+					} else {
+						secondCard = card;
+						secondCard.addEventListener('transitionend', check);
+					}
+					if(startTime!==null){
+						return;
+					}
+					startTime = Date.now();
+					runTime();
+					document.getElementById('restart').className='';
+				}
+				function check(){
+					if(firstCard.children[0].textContent!==secondCard.children[0].textContent){
+						firstCard.className = 'card';
+						secondCard.className = 'card';
+					} else {
+						correctCount++;
+						if(correctCount===pairs){
+							clearTimeout(timer);
+						}
+					}
+					secondCard.removeEventListener('transitionend', check);
+					firstCard=null;
+					secondCard=null;
+				}
+				function runTime(){
+					document.getElementById('score').textContent=((Date.now()-startTime)/1000).toFixed(2);
+					timer = setTimeout(function(){
+						runTime();
+					},10);
+				}
+
+
+				init();
+			})();
+		</script>
+	</body>
+</html>
+

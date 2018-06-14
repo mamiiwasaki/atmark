@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>___CONTENTS_NAME___</title>
+    ___HEAD___
+    ___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+    <div id="nav-wrapper">
+        <!-- Nav -->
+        <nav id="nav">
+            ___NAVI___
+        </nav>
+    </div>
+</div>
+<!-- Header -->
+<!-- Main -->
+<div id="main">
+    <div id="container" class="container">
+        <div id="study">
+            ___SUBMENU___
+
+            <h2>基本</h2>
+            <pre class="brush:html">
+                <canvas id="stage" width="500" height="250"></canvas>
+            </pre>
+
+            <pre class="brush:css">
+                var stage = document.getElementById('stage');
+                if (typeof stage.getContext === 'undefined') {
+                    return;
+                }
+                var ctx = stage.getContext('2d');
+            </pre>
+            <h3>座標の取り方</h3>
+            <pre class="brush: css">
+                var x = e.clientX - canvas.offsetLeft;
+                var y = e.clientY = canvas.offsetTop;
+                //--------------------------------------
+                var x, y, rect;
+                rect = e.target.getBoundingClientRect();
+
+                x = e.pageX-rect.left-window.scrollX;
+                y = e.pageY-rect.top-window.scrollY;
+            </pre>
+
+            <h3>イベント</h3>
+            <pre>
+                mousedown: マウスの左ボタンが押されたときに発生
+                mouseup: マウスの左ボタンが離されたときに発生
+                click: クリックされたときに発生(mousedown, mouseup の後)
+                mouseover: カーソルが乗ったときに発生
+                mouseout: カーソルが離れたときに発生
+            </pre>
+
+            <h3>screen, page の違い</h3>
+            <pre>
+               screenX/Y: フルスクリーン画面における座標
+               clientX/Y: ブラウザの viewport における座標(scroll しても変わらない)
+               pageX/Y: ページにおける座標(scroll したら変わる/非推奨)
+            </pre>
+
+            <h3>描画するメソッド</h3>
+            <pre>
+                ctx.fillRect() メソッドは塗りつぶされた矩形
+                ctx.strokeRect() メソッドは枠線のみ
+                ctx.clearRect() 矩形を削除する
+                引数（x, y, width, height);
+            </pre>
+
+            <h3>図形の色を指定する</h3>
+            <pre>
+                ctx.fillStyle = 'blue'
+                ctx.strokeStyle = 'pink';
+                ctx.fillStyle = 'rgb(192, 80, 77)'; // 赤
+                ctx.fillStyle = 'rgb(155, 187, 89)'; // 緑
+                ctx.fillStyle = 'rgb(128, 100, 162)'; // 紫
+                // 半透明は
+                ctx.fillStyle = 'rgba(192, 80, 77, 0.7)'; // 半透明赤
+                ctx.fillStyle = 'rgba(155, 187, 89, 0.7)'; // 半透明緑
+                ctx.fillStyle = 'rgba(128, 100, 162, 0.7)'; // 半透明紫
+                もしくは、透明度を指定して
+                ctx.globalAlpha = 0.7;
+                ctx.fillStyle = 'rgb(192, 80, 77)'; // 赤
+
+            </pre>
+
+
+
+            <canvas id="stage2" width="500" height="250"></canvas>
+            <div style="clear: both"></div>
+            <div class="button sample" id="draw1">矩形、円を描画。色と透明度を指定</div>
+            <div class="button sample" id="draw2"></div>
+            <div class="button sample" id="draw3"></div>
+
+        </div>
+    </div>
+    <style>
+        #stage2{
+            border: 1px solid #333;
+        }
+    </style>
+<script>
+    (function(){
+        'use strict';
+        var stage = document.getElementById('stage2');
+        if(typeof stage.getContext==='undefined'){
+            return;
+        }
+        var ctx = stage.getContext('2d');
+
+        stage.addEventListener('click', function(e){
+            var x, y, rect;
+            rect = e.target.getBoundingClientRect();
+
+            x = e.pageX-rect.left-window.scrollX;
+            y = e.pageY-rect.top-window.scrollY;
+            console.log('click', x, y);
+
+            ctx.fillStyle = 'blue';
+            ctx.strokeStyle = 'pink';
+            ctx.fillRect(x, y, 10, 10);
+
+        });
+        // document.getElementById('draw2').addEventListener('click', function(e){
+        //    draw2();
+        // });
+       // document.getElementsByClassName('sample').
+
+        document.querySelectorAll('#draw1, #draw2, #draw3'){
+
+        }
+        function draw1(){
+            /* 四角を描く */
+            ctx.beginPath();        // 線を描く宣言
+            ctx.moveTo(20, 20);     // 書き始める場所
+            ctx.lineTo(120, 20);    // 引きたい線の終点
+            ctx.lineTo(120, 120);
+            ctx.lineTo(20, 120);    // 引きたい線の終点
+            ctx.closePath();        // 書いた線を閉じる
+            ctx.stroke();           // できた図形を線で描画
+            // 円を描く
+            ctx.beginPath();
+            ctx.arc(30, 150, 30, 0, Math.PI*2, false);
+            ctx.stroke();
+            // 円弧を描く
+            ctx.beginPath();
+            ctx.arc(90, 150, 30, 10 * Math.PI / 180, 80 * Math.PI / 180, true);
+            ctx.stroke();
+            // 円弧を塗りつぶす
+            ctx.globalAlpha = 0.7;
+            ctx.fillStyle = 'rgb(192, 80, 77)'; // 赤
+            ctx.beginPath();
+            ctx.arc(180, 150, 30, 10 * Math.PI / 180, 80 * Math.PI / 180, true);
+            ctx.fill();
+            ctx.fillStyle = 'rgb(155, 187, 89)'; // 青
+            ctx.beginPath();
+            ctx.arc(150, 180, 30, 10 * Math.PI / 180, 80 * Math.PI / 180, true);
+            ctx.fill();
+            ctx.fillStyle = 'rgb(128, 100, 162)'; // 緑
+            ctx.beginPath();
+            ctx.arc(210, 180, 30, 10 * Math.PI / 180, 80 * Math.PI / 180, true);
+            ctx.fill();
+
+            /*
+            360°であれば Math.PI * 2
+             */
+        }
+
+    })();
+</script>
+</body>
+</html>

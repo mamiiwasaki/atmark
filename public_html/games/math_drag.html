@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+				overflow: hidden;
+			}
+			#main{
+				height: 100%;
+			}
+			/*
+			設問
+			 */
+			#question{
+				margin: 20px auto 10px;
+				width: 380px;
+				height: 200px;
+			}
+			#left, #right, #operator{
+				width: 170px;
+				height:170px;
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				text-align: center;
+				padding: 5px;
+			}
+			#operator{
+				width: 5px;
+				text-align: center;
+				line-height: 180px;
+				border: none;
+			}
+			#left{
+				float: left;
+			}
+			#operator{
+				float: left;
+			}
+			#right{
+				float: right;
+			}
+			.chara{
+				width: 46px;
+				/*animation: purun 0.8s linear 0s 1;*/
+				animation: purun 1s infinite;
+			}
+			.chara + .chara{
+				margin-left: 5px;
+			}
+			/**
+			答え
+			 */
+			#answer{
+				width: 130px;
+				height:130px;
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				text-align: center;
+				margin: 0 auto 30px;
+			}
+			/*
+			数字
+			 */
+			#number_stage{
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				width: 380px;
+				height: 58px;
+				line-height: 58px;
+				margin: 0 auto;
+				text-align: center;
+			}
+			#number_stage img{
+				width: 32px;
+				cursor: move;
+				position: absolute;
+				z-index: 1000;
+				/*transition: 0.3s;*/
+			}
+			#number_stage img:hover{
+				animation-name: shake;
+				animation-duration: .2s;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+				width: 50px;
+				transform: translate(-150px, -150px);
+			}
+			.number+.number{
+				/*margin-left: 15px;*/
+			}
+
+			@keyframes shake {
+				0%{transform: rotate(8deg) translate(1px, 0);}
+				50%{transform: rotate(-8deg) translate(-1px, 0);}
+				100%{transform: rotate(8deg) translate(1px, 0);}
+			}
+
+			@keyframes purun2 {
+				0%   { transform: scale(1.0, 1.0) translate(0%, 0%); }
+				15%  { transform: scale(0.9, 0.9) translate(0%, 5%); }
+				30%  { transform: scale(1.3, 0.8) translate(0%, 10%); }
+				50%  { transform: scale(0.8, 1.3) translate(0%, -10%); }
+				70%  { transform: scale(1.1, 0.9) translate(0%, 5%); }
+				100% { transform: scale(1.0, 1.0) translate(0%, 0%); }
+			}
+			@keyframes purun {
+				0% { transform:translateY(0) }
+				10% { transform:translateY(0) }
+				20% { transform:translateY(-2px) }
+				40% { transform:translateY(0) }
+				60% { transform:translateY(-2px) }
+				80% { transform:translateY(0) }
+				100% { transform:translateY(0) }
+			}
+			.drag {
+				z-index: 1001;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="question">
+					<div id="left"></div>
+					<div id="operator"><img src="/images/operator/math_mark01_plus.png" width="32"></div>
+					<div id="right"></div>
+				</div>
+				<div id="answer"></div>
+				<div id="number_stage"></div>
+			</div>
+		</div>
+		<script>
+			(function(){
+			    'use strict';
+			    // dragstart, drag, dragenter, dragleave, dragover, drop, dragend
+//http://www.pori2.net/html5/DragDrop/050.html
+			    /**
+			    設問を設定
+			     */
+			    var birds = [
+			        'bird_hakuchou','bird_aokakesu','bird_kiji',
+			        'bird_mejiro','bird_syoujou_koukanchou','bird_yairochou',
+			        'bird_kinkurohajiro','bird_hato_ryokoubato','bird_syoujou_koukanchou',
+			        'bird_tonbi','kodai_shisochou','bird_komadori',
+			        'bird_tsubame','bird_kogamo','bird_inko'
+				];
+
+			    var left = document.getElementById('left');
+			    var right = document.getElementById('right');
+
+			    setChara(left);
+			    setChara(right);
+				// キャラをセット
+				function setChara(obj){
+                    var cnt = Math.floor(Math.random() * 6+1);
+
+                    for(var i=0; i<cnt; i++){
+                        var img = document.createElement('img');
+                        img.src = '/images/birds/' + birds[Math.floor(Math.random()*birds.length)] + '.png';
+                        img.className = 'chara';
+                        obj.appendChild(img);
+                    }
+				}
+
+                /**
+				 * 数字をセット
+                 */
+                var number_stage = document.getElementById('number_stage');
+                var clientRect = number_stage.getBoundingClientRect();
+                var x = clientRect.left;
+
+                for(var n=0; n<10; n++){
+                    // 数字画像をappend
+                    var img = document.createElement('img');
+                    img.className = 'chara';
+                    img.src = '/images/numbers/candle_number'+n+'.png';
+                    img.id="num"+n;
+                    number_stage.appendChild(img);
+                    // 横座標
+					x += (n===0) ? 15 : 35;
+                    img.style.left= x+'px';
+
+                    // イベントリスナー登録
+                    img.addEventListener("dragstart", function(evt){
+                        console.log(evt.target.id);
+                        evt.dataTransfer.setData("text/plain", evt.target.id);
+                        evt.stopPropagation();
+                    },false);
+				}
+
+                // ドロップされる側
+                var answer = document.getElementById("answer");
+                answer.addEventListener( "drop" , function(evt){
+                    var id = evt.dataTransfer.getData( "text/plain" );
+
+                    var num_org = document.getElementById( id );
+                    if( num_org ) {
+                        answer.appendChild( num_org );  //要素を移動する
+						num_org.style.width=80+'px';
+                    }
+                    evt.preventDefault();
+                }, false );
+
+                //２つのイベントでデフォルト動作を抑制
+                answer.addEventListener( "dragenter" , function(evt){
+                    evt.preventDefault();
+                }, false );
+                answer.addEventListener( "dragover" , function(evt){
+                    evt.preventDefault();
+                }, false );
+			})();
+
+		</script>
+	</body>
+</html>
+

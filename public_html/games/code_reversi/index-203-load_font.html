@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=0" />
+    <title>Reversi</title>
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="fnt/ArchivoBlack.css" />
+  <!-- game -->
+    <script src="js/game.canvas.js"></script>
+    <script src="js/game.core.js"></script>
+  <!-- resouce -->
+    <script src="js/resouce.font.js"></script>
+  <!-- init -->
+    <script>
+	$(function() {
+		// リソース（フォント）の読み込み
+		var r = [];
+		r.push(resouce.font.load("serif", "ArchivoBlack, serif"));
+
+		// $.when を利用して、$.Deferred の全処理が終わるのを待つ
+		$.when.apply($, r).then(function() {
+			// 縦横比固定でキャンバス作成
+			var sz = game.core.getFitSz(10, 11);
+			var c = game.canvas.initCnvs("reversi", sz.w, sz.h);
+
+			// 文字描画
+			c.cntx.fillStyle = "#000";
+			c.cntx.textAlign = "center";
+			c.cntx.textBaseline = "middle";
+			c.cntx.font = (c.w * 0.1 | 0) + "px 'ArchivoBlack'";
+			c.cntx.fillText("Abcdefghijklmn", c.w / 2, c.h / 2);
+		});
+	});
+    </script>
+  </head>
+  <body>
+    <div id="reversi"></div>
+  </body>
+</html>

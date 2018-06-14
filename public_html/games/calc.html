@@ -1,0 +1,236 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+			}
+			#stage {
+				margin: 50px auto 0;
+				padding: 30px 0 20px;
+				width: 410px;
+				background: #E0DEDA;
+			}
+			#stage #screen {
+				margin: 0 auto 15px;
+				width: 354px;
+				height: 80px;
+				background: #DFE9E9;
+				position: relative;
+			}
+			#stage #screen p {
+				width: 100%;
+				text-align: right;
+				position: absolute;
+				right: 10px;
+			}
+			#stage #screen p.text1 {
+				margin-bottom: 3px;
+				top: 10px;
+			}
+			#stage #screen p.text2 {
+				font-size: 24px;
+				font-weight: bold;
+				top: 35px;
+			}
+			#stage ul{
+				margin: 0 auto;
+				width: 354px;
+				display: flex; /*???*/
+				flex-wrap: wrap;/*???*/
+				justify-content: space-between;/*???*/
+				align-items: flex-start;/*???*/
+				text-align: center;
+			}
+			#stage ul li {
+				margin: 0 0 10px;
+				background: #fff;
+				width: 62px;
+				height: 62px;
+				line-height: 62px;
+				text-align: center;
+				line-style: none;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+			#stage ul li:hover{
+				background: #eee;
+			}
+			#stage ul li:active{
+				border: #8ADDFD 2px solid;
+				box-sizing: border-box;
+			}
+			#stage ul li.colspan{
+				width: 134px;
+			}
+
+
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="stage">
+					<div id="screen">
+						<p class="text1"></p>
+						<p class="text2"></p>
+					</div>
+					<ul>
+						<li class="num">7</li>
+						<li class="num">8</li>
+						<li class="num">9</li>
+						<li id="ac" class="colspan">AC</li>
+						<li class="num">4</li>
+						<li class="num">5</li>
+						<li class="num">6</li>
+						<li id="waru">÷</li>
+						<li id="kake">×</li>
+						<li class="num">1</li>
+						<li class="num">2</li>
+						<li class="num">3</li>
+						<li id="hiku">－</li>
+						<li id="tasu">＋</li>
+						<li class="colspan num">0</li>
+						<li id="ten">.</li>
+						<li id="wa" class="colspan">＝</li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		<script>
+			$(function(){
+				'use strict';
+				// const
+                var tenflg = false;  //小数点が使える状況かどうかを判断するフラグ
+                var second = false;  //一度計算を行った後かどうか確認するフラグ
+                var keisan1,keisan2;  //計算に使う数字を格納する変数
+                var calc;  //計算式のタイプを格納する変数（1=足し算、2=引き算、3=掛け算、4=割り算）
+                var kigou;  //数式記号を核のする変数
+                var kekka;  //計算結果を格納する変数
+
+				var numbtn = $(".num");
+				var src1 = $("#screen .text1");
+				var src2 = $("#screen .text2");
+				var ten = $("#ten");
+				var tasu = $('#tasu');
+				var hiku = $('#hiku');
+				var kake = $('#kake');
+				var waru = $('#waru');
+				var wa = $('#wa');
+				var ac = $('#ac');
+
+				// 全ての表示を消す
+				function allClear(){
+				    src1.text('');
+				    src2.text('');
+				    keisan1 = keisan2 = calc = '';
+				}
+				// screenに数字を表示する
+				function display1(i){
+				    var j = src1.text();
+                    src1.text(j+i);
+				}
+				function display2(i){
+				    var j = src2.text();
+				    src2.text(j+i);
+				}
+                //表示されている数字をdisplay1に保存して液晶表示を消す関数
+                function save(){
+				    keisan1 = src2.text();
+				    src2.text('');
+				}
+
+				numbtn.click(function(){
+				    if(second == true){
+				        allClear();
+				        second = false;
+					}
+					var moji = $(this).text();
+				    display1(moji);
+				    display2(moji);
+				});
+				ten.click(function(){
+				    if(tenflg==false){
+				        if(second==true){
+				            allClear();
+				            second = false;
+						}
+						var moji = $(this).text();
+				        display1(moji);
+				        display2(moji);
+				        tenflg = true;
+					}
+				});
+				ac.click(function(){
+				    allClear();
+				});
+				tasu.click(function(){
+				   save();
+				   kigou = tasu.text();
+				   display1(kigou);
+				   calc = 1;
+				   second = tenflg = false;
+				});
+				hiku.click(function(){
+				   save();
+				   kigou = hiku.text();
+				   display1(kigou);
+				   calc = 2;
+				   second = tenflg = false;
+				});
+				kake.click(function(){
+				   save();
+                    kigou = kake.text();
+				   display1(kigou);
+				   calc = 3;
+				   second = tenflg = false;
+				});
+				waru.click(function(){
+				    save();
+				    kigou = waru.text();
+				    display1(kigou);
+				    cac = 4;
+				    second = tenflg = false;
+				});
+				wa.click(function(){
+				    keisan2 = src2.text();
+				    if(calc==1) {
+                        kekka = Number(keisan1) + Number(keisan2);
+                    } else if(calc==2){
+                        kekka = Number(keisan1) - Number(keisan2);
+                    } else if(calc==3){
+                        kekka = Number(keisan1) * Number(keisan2);
+                    } else if(calc==4){
+                        kekka = Number(keisan1) / Number(keisan2);
+					}
+					src2.text(kekka);
+				    tenflg = false;
+				    second = false;
+				})
+
+
+			});
+
+
+		</script>
+	</body>
+</html>
+

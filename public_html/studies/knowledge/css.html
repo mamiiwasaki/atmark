@@ -1,0 +1,690 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		___HIGHT_JS___
+	</head>
+	<body>
+
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+	<!-- Header -->
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="study">
+				___SUBMENU___
+
+				<h2>小技</h2>
+					<pre class="brush:css">
+						div の中でへんに中身が改行してしまう場合
+						font-size: 0;
+
+						display: block;		// 親要素にたいしていっぱいに広がる
+					</pre>
+
+
+				<h2>HTMLについて</h2>
+				<h3>meta, link, favicon, 文字化け対策</h3>
+				<h3>id, class, style</h3>
+				グローバル属性
+				<h3>セクション</h3>
+				html5ではcontentsを構造化することが求められる。
+				<pre class="brush:css">
+					header
+					footer
+					nav			/* グローバルメニュー、サイドメニュー、パンくずリストのようなナビゲーション */
+					article		/* 独立したコンテンツ（ューズ記事、ブログ記事など） */
+					aside		/* 副次的なコンテンツ(補足情報、広告など) */
+					section		/* 上記以外の情報のかたまり。 */
+					h1-h6		/* 見出し */
+				</pre>
+				<h3>ol, ul, li</h3>
+				<pre class="brush:css">
+					ol(orderd list)
+					ul(unorderd list)
+					li(list item)
+					dl(definition list)
+					dt(definition term)
+					dd(definition description)
+				</pre>
+
+
+
+				<h2>いろいろ</h2>
+				<pre class="brush:css">
+					#padding
+					1	top/bottom/right/left
+					2	top/bottom, right/left
+					3	top, right/left, bottom
+					4	top, right, bottom, left
+					#座標
+					x: 横
+					y: 縦
+					#サイズ
+					1em
+					16px
+					#marginの総裁
+					大きい方が優先される。
+					#二つ同時に指定できる
+					text-decoration: underline line-through;
+					#ベンダープレフィックスを確認する
+					Firefox -mpz-
+					Opera -o-
+					Chrome, Safari -webkit-
+					IE -ms-
+					#div の文字を真ん中に配置するには
+					height: 70px;
+					line-height: 70px;
+				</pre>
+
+				<h2>position</h2>
+				<pre class="brush:css">
+					- static	/* default */
+					- relative	/* ずらして使う */
+					- fixed		/* スクロールしても位置を固定したい場合 */
+					- absolute	/* 親要素のpositionが何かによって配置の基準点が変わる */
+				</pre>
+				<style>
+					#box1{
+						background: gray;
+						position: static;
+						width: 100px;
+						height: 50px;
+						top: 10px;
+						left: 10px;
+					}
+					#box2{
+						background: orangered;
+						width: 100px;
+						height: 50px;
+						position: static;
+					}
+					#box3{
+						background: pink;
+						width: 50px;
+						height: 25px;
+						position: absolute;
+						top: 10px;
+						left: 10px;
+					}
+				</style>
+				<div id="box1"></div>
+				<div id="box2">
+					<div id="box3"></div>
+				</div>
+
+				<h2>overflow</h2>
+				<h3>幅と高さを超えて存在するときにどのような表示方法にするか</h3>
+				<pre >
+					- visible
+					- hidden	/* はみ出た部分を非表示 */
+					- scroll	/* スクロール領域を作る */
+				</pre>
+
+
+
+				<h2>float, clear</h2>
+				floatを使うときにはwidthをセットで使う
+
+
+				<h2>displayについて</h2>
+				<pre >
+					h1, pのように下に積み上げられて配置される
+					span, aは横に積み上げられる
+					h1, p
+						blockボックス
+						blockレベル要素
+					span, a
+						inlineボックス
+						inlineレベル要素
+
+					display:
+					- block
+					- inline
+					- list-item
+					- inline-block
+					- none
+				</pre>
+
+				<h2>background</h2>
+				<pre >
+					background-position: 10px 10px;
+					background-position: top center;
+					background-attachment: scroll;
+					background-attachment: fixed;
+					#一気に指定もできる。順不同かつ省略可能。 スペース区切りで。
+					background: url('bg.png') no-repeat fixed;
+				</pre>
+
+				<h2>displya: table</h2>
+				<h3>row, cell</h3>
+					<pre >
+				.container2{
+					display: table;
+					width: 300px;
+				}
+				.row{
+					display: table-row;
+				}
+				.box{
+					display: table-cell;
+					width: 100px;
+				}
+				.gray{background: gray;}
+				.silver{background: silver;}
+				.orange{background: orange;}
+
+                &lt;div class=&quot;container2&quot;&gt;
+                    &lt;div class=&quot;row&quot;&gt;
+                        &lt;div class=&quot;box gray&quot;&gt;
+                            Hello Hello Hello
+                        &lt;/div&gt;
+                        &lt;div class=&quot;box silver&quot;&gt;
+                            Hello Hello Hello
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;row&quot;&gt;
+                        &lt;div class=&quot;box orange&quot;&gt;
+                            Hello Hello
+                        &lt;/div&gt;
+                        &lt;div class=&quot;box gray&quot;&gt;
+                            Hello Hello
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+				</pre>
+				<style>
+					.container2{
+						display: table;
+						width: 300px;
+					}
+					.row{
+						display: table-row;
+					}
+					.box{
+						display: table-cell;
+						width: 100px;
+					}
+					.gray{background: gray;}
+					.silver{background: silver;}
+					.orange{background: orange;}
+				</style>
+				<div class="container2">
+					<div class="row">
+						<div class="box gray">
+							Hello Hello Hello
+						</div>
+						<div class="box silver">
+							Hello Hello Hello
+						</div>
+					</div>
+					<div class="row">
+						<div class="box orange">
+							Hello Hello
+						</div>
+						<div class="box gray">
+							Hello Hello
+						</div>
+					</div>
+				</div>
+
+				<h2>list</h2>
+				<pre >
+				- list-style-type:
+					disc/circle/square/decimal/lower-alpha
+				- list-style-image
+				- list-style-position:
+					inside/outside
+				- list-style:
+				</pre>
+				<style>
+					ul{
+						list-style-position: outside;
+					}
+				</style>
+				<ul><li>aaa</li><li>bbb</li></ul>
+
+
+
+				<h2>擬似クラスとは</h2>
+				選択された要素の特定の部分を整形できるようにするもの
+				<pre >
+					ul li:first-child { color: blud;}
+					a:link {color: blue;}
+					a:lvisited {color: orange;}
+					a:lhover {color: red;}
+					a:lactive {color: green;}
+					input:focus{background: skyblue}
+					:active
+					:any
+					:checked
+					:default
+					:dir()
+					:disabled
+					:empty
+					:enabled
+					:first
+					:first-child
+					:first-of-type
+					:fullscreen
+					:focus
+					:hover
+					:indeterminate
+					:in-range
+					:invalid
+					:lang()
+					:last-child
+					:last-of-type
+					:left
+					:link
+					:not()
+					:nth-child()
+					:nth-last-child()
+					:nth-last-of-type()
+					:nth-of-type()
+					:only-child
+					:required
+					:right
+					:target
+					:valid
+					:visited
+				</pre>
+
+				<h2>擬似要素とは</h2>
+				要素の状態に基づいて整形を行うことができる
+				<style>
+					p:first-letter{
+						color: blue;
+						font-size: 20px;
+					}
+					.test:before {
+						content: "<---";
+					}
+					.test:after {
+						content: "--->";
+					}
+				</style>
+				<p>
+					じっくり考えろ。 しかし、行動する時が来たなら、 考えるのをやめて、 進め。
+				</p>
+				<p class="test">
+					「なぜ生きるか」を知っている者は、 ほとんど、あらゆる 「いかに生きるか」に耐えるのだ。
+				</p>
+				<pre >
+					p:first-letter{
+						color: blue;
+						font-size: 20px;
+					}
+					.test:before {
+						content: "<---";
+					}
+					.test:after {
+						content: "--->";
+					}
+
+					::after
+					::before
+					::cue
+					::first-letter
+					::first-line
+					::selection
+					::slotted
+					::backdrop
+					::placeholder
+					::marker
+					::spelling-error
+					::grammar-error
+				</pre>
+
+
+				<h2>セレクタの優先度</h2>
+					<style>
+					a {color: blue;}
+					a.link {color: red;}
+					a.search {color: green;}
+					a#site {color:orange;}
+				</style>
+				<pre class="blush: css">
+					詳細度
+					(a) style=""
+					(b) id
+					(c) 属性/擬似クラス
+					(d) 要素/擬似要素
+					同じ詳細度だと、あとから書いた方が優先される
+					強制的に優先させる場合は, a {color: blue !important;}
+
+					a {color: blue;}
+					a.link {color: red;}
+					a.search {color: green;}
+					a#site {color:orange;}
+				</pre>
+				<a href="#" class="link search" id="site">セレクタの優先度</a>
+
+				<h2>ボックスモデル</h2>
+				高さは、親要素に高さの明示的に示さないといけない。
+				<style>
+					#test2{
+						height: 100px;
+					}
+					#test3{
+						background: silver;
+						width: 200px;
+						height: 100%;
+						color: red;
+						text-decoration: underline line-through;
+					}
+				</style>
+				<div id="test2">
+				<div id="test3">Element</div>
+				</div>
+
+
+
+
+				<h2>transform</h2>
+				<h3></h3>
+				<style>
+					#box1{
+						background: skyblue;
+						opacity: 5;
+					}
+					#box2{
+						background: orange;
+						opacity: 5;
+						transform: translate(10px, 20px);
+						transform: skew(10deg, 20deg);
+						transform: rotate(10deg);
+					}
+
+				</style>
+				<pre class="brush:css">
+					transform:translate
+
+					■各種変形用途
+
+					回転: rotate()系
+					拡大/縮小: scale()系
+					移動: translate()系
+					傾斜: skew()系
+					遠近効果: perspective()
+
+					transform:skew			/* 傾斜 */
+					transform-origin		/* 起点を指定する */
+
+					■マトリックス変形用
+
+					2D変形: matrix()
+					3D変形: matrix3d()
+				</pre>
+				<div id="box1"></div>
+				<div id="box2"></div>
+
+
+
+				<h2>transition</h2>
+				<h3></h3>
+				<style>
+					#test4{
+						width: 100px;
+						height: 50px;
+						background: skyblue;
+
+						transition-property:all;
+						transition-duration:2s;
+						transition-timing-function:ease;
+						transition-delay:0.8s;
+/*						transition: all 2s ease 0.8s;*/
+					}
+					#test4:hover{
+						width: 200px;
+						background: lemonchiffon;
+					}
+				</style>
+				<pre class="brush:css">
+					trtasition-timing-function:
+					- ease	開始と終了なめらか
+					- linear	等速度
+					- ease-in	開始がゆっくり
+					- ease-out	終了がゆっくり
+					- ease-in-out	開始と終了がゆっくり
+				</pre>
+				<div id="test4">Calendar</div>
+
+
+
+
+
+
+				<h2>animation</h2>
+				<h3></h3>
+				<style>
+					#test5{
+						width: 50px;
+						height: 50px;
+						background: skyblue;
+						-webkit-animation-name: slidein;
+						-webkit-animation-duration: 1s;
+						-webkit-aniimation-timing-function: ease;
+						-webkit-animation-delay: 1s;
+						-webkit-animation-iteration-count: infinite;	/* 繰り返す */
+						-webkit-animation-direction: alternate;
+					}
+					@-webkit-keyframes slidein {
+						0% {
+							margin-left: 100%;
+							background: white;
+						}
+						70% {
+							margin-left: 50%;
+							background: blue;
+						}
+						100% {
+							margin-left: 0%;
+						}
+					}
+				</style>
+				<pre class="brush:css">
+					#test5{
+						width: 50px;
+						height: 50px;
+						background: skyblue;
+						-webkit-animation-name: slidein;
+						-webkit-animation-duration: 1s;
+						-webkit-aniimation-timing-function: ease;
+						-webkit-animation-delay: 1s;
+						-webkit-animation-iteration-count: infinite;	/* 繰り返す */
+						-webkit-animation-direction: alternate;
+					}
+					@-webkit-keyframes slidein {
+						0% {
+							margin-left: 100%;
+							background: white;
+						}
+						70% {
+							margin-left: 50%;
+							background: blue;
+						}
+						100% {
+							margin-left: 0%;
+						}
+					}
+				</pre>
+				<div id="test5">UCC</div>
+jquery animation<br>
+					.animate(パラメータ, [速度], [イージング], [コールバック])
+
+
+				<h2>transitionとanimation</h2>
+					<div class="notice">
+						transition:　設定した動きから元に戻る際に自動的に逆の動きをする。<br>
+						animation:　transitionよりももっと細かく動きを設定でき、永久的に動かす事も可能。
+
+
+					</div>
+					<div class="notice">
+						<pre>
+						animation-name: アニメーションの名前を自分で自由につける。(書かないと実行されない)
+						animation-duration: アニメーション1回分の長さ
+						animation-timing-function: アニメーションのタイミング・進行割合
+						　かなり細かい設定ができるがとりあえず以下5つだけおさえる。
+						　　・ease：開始と完了を滑らかに
+						　　・liner：一定
+						　　・ease-in：ゆっくり始まる
+						　　・ease-out：ゆっくり終わる
+						　　・ease-in-out：ゆっくり始まってゆっくり終わる
+						animation-delay: アニメーションがいつ始まるか
+						animation-iteration-count： アニメーションの繰り返し回数
+						　　・infinite: 無限に繰り返す
+						　　・数値: 指定回数だけ繰り返す
+						animation-direction: アニメーションを交互に反転して繰り返す
+						</pre>
+					</div>
+
+
+
+
+
+
+
+
+					<h2>cssでfontawsomeを取り扱う</h2>
+					<h3></h3>
+					<pre class="brush:css">
+					    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+					</pre>
+					<pre >
+						th:after{
+							content:'\f0dc';
+							font-family: FontAwesome;
+							font-size: 12px;
+							color: #ccc;
+							float: right;
+							padding-top: 4px;
+							font-weight: normal;
+						}
+					</pre>
+					<style>
+						#table1{
+							border-collapse: collapse;
+							border: 1px solid #333;
+							width: 300px;
+						}
+						th, td{
+							border: 1px solid #333;
+							box-sizing: border-box;
+						}
+						th:after{
+							content:'\f0dc';
+							font-family: FontAwesome;
+							font-size: 12px;
+							color: #ccc;
+							float: right;
+							padding-top: 4px;
+							font-weight: normal;
+						}
+					</style>
+					<table id="table1">
+						<thead>
+						<tr>
+							<th>Name</th>
+							<th>Team</th>
+							<th>Score</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td>doc</td>
+							<td>A</td>
+							<td>99</td>
+						</tr>
+						<tr>
+							<td>Cat</td>
+							<td>A</td>
+							<td>99</td>
+						</tr>
+						</tbody>
+					</table>
+
+
+
+
+					<h2>media query</h2>
+					<pre>
+						スクリーンサイズ 1280px
+						スクリーンサイズ 1028px
+						スクリーンサイズ 768px
+						スクリーンサイズ 480px
+						スクリーンサイズ 320px
+					</pre>
+					<pre class="brush:css">
+						@media screen and (max-width: 1000px) {
+						  #container{
+							width : 95%;
+						  }
+						}
+						@media screen and (max-width: 760px) {
+						  /* style */
+						}
+						@media screen and (max-width: 480px) {...}
+						@media screen and (max-width: 320px) {...}
+					</pre>
+					<h3>モバイルファースト</h3>
+					<pre class="brush:css">
+						/* モバイル用のスタイル */
+
+						/* タブレット */
+						@media all and (min-width: 768px) {}
+						/* PC */
+						@media all and (min-width: 920px) {}
+
+					</pre>
+					<pre class="brush:css">
+						<link rel="stylesheet" media="screen and (max-width: 480px)" href="mobile.css" />
+					</pre>
+
+
+
+
+
+
+
+
+				<h2></h2>
+				<h3></h3>
+				<style>
+
+				</style>
+				<pre class="brush:css">
+					input[type="text"]{
+							width: 300px;
+							padding: 7px;
+							border-radius: 3px;
+							font-size: 24px;
+							font-family: 'Courier New', sans-serif;
+							text-align: center;
+
+						}
+				</pre>
+
+
+
+
+			</div>
+
+
+
+
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=0" />
+    <title>Reversi</title>
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="fnt/ArchivoBlack.css" />
+  <!-- resouce -->
+    <script src="js/resouce.image.js"></script>
+  <!-- init -->
+    <script>
+	$(function() {
+		// リソース（画像）の読み込み
+		var r = [];
+		r.push(resouce.image.load("bg",    "img/bg.png"));
+		r.push(resouce.image.load("_tkn0", "img/token0.png"));
+		r.push(resouce.image.load("_tkn1", "img/token1.png"));
+
+		// $.when を利用して、$.Deferred の全処理が終わるのを待つ
+		$.when.apply($, r).then(function() {
+			var imgs = resouce.image.imgs;
+			for (var key in imgs) {
+				console.log(imgs[key]);
+				$("body").append(key).append(imgs[key]);
+			}
+		});
+	});
+    </script>
+  </head>
+  <body>
+    <div id="reversi"></div>
+  </body>
+</html>

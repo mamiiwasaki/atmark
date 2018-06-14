@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+				font-family: Verdana, sans-serif;
+			}
+			#main{
+				height: 100%;
+			}
+			.container{
+				width: 400px;
+				margin: 10px auto;
+				position: relative;	/* resultを重ねて表示したいので！！！！！！*/
+			}
+			#question {
+				background: #cce5ff;
+				color: #004085;
+				height: 40px;
+				border-radius: 4px;
+				padding: 10px;
+				margin-bottom: 10px;
+			}
+
+			#answers {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			#answers > li {
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				padding: 10px;
+				margin-bottom: 10px;
+			}
+			#answers > li:hover {
+				cursor: pointer;
+				background: #f8f8f8;
+			}
+			#answers > li.correct {
+				background: #d4edda;
+				border-color: #c3e6cb;
+				color: #155724;
+				font-weight: bold;
+			}
+
+			#answers > li.wrong {
+				background: #f8d8da;
+				border-color: #f5c6cb;
+				color: #721c24;
+				font-weight: bold;
+			}
+			#btn {
+				cursor: pointer;
+				background: #3498db;
+				border-radius: 4px;
+				padding: 10px;
+				text-align: center;
+				color: #fff;
+				box-shadow: 0 3px 0 #2880b9;
+			}
+			#btn.disabled {
+				opacity: 0.2;
+			}
+			#result {
+				position: absolute;
+				/*top: 50px;*/
+				top: -500px;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+				background: #fff;
+				width: 300px;
+				border-radius: 3px;
+				padding: 30px;
+				text-align: center;
+				box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+				transition: 0.4s ease-out;	/*ゆっくり戻す*/
+			}
+
+			#result > p {
+				font-size: 24px;
+			}
+
+			#result > a {
+				display: block;
+				text-decoration: none;
+				color: #fff;
+			}
+
+			#result.show {
+				top: 50px;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="question"></div>
+				<ul id="answers">
+				</ul>
+				<div id="btn" class="disabled">つぎ</div>
+				<div id="result">
+					<p>Score: 3/3</p>
+					<a href="">もういっかい</a>
+				</div>
+
+			</div>
+		</div>
+		<script>
+            (function(){
+                'use strict';
+                var question = document.getElementById('question');
+                var btn = document.getElementById('btn');
+                var answers = document.getElementById('answers');
+                var result = document.getElementById('result');
+                var scoreLabel = document.querySelector('#result > p');
+                var shuffledAnsweres;
+                var quizeSet = [
+					{q: 'これなんだ？', a:['A0', 'A1', 'A2']},
+					{q: 'これなんだ？', a:['B0', 'B1', 'B2']},
+                    {q: 'これなんだ？', a:['C0', 'C1', 'C2']},
+                    {q: 'これなんだ？', a:['D0', 'D1', 'D2']},
+                    {q: 'これなんだ？', a:['E0', 'E1', 'E2']}
+				];
+                var currentNum = 0;
+                var isAnswerd = false;
+                var score = 0;
+
+                /**
+				 * つぎへ
+                 */
+                btn.addEventListener('click', function(){
+                    if(this.classList.contains('disabled')){
+                        return;
+					}
+					console.log(currentNum, quizeSet.length);
+                    if(currentNum===quizeSet.length){
+						console.log(score+'/'+quizeSet.length);
+						result.classList.add('show');
+                        scoreLabel.textContent = score+'/'+quizeSet.length;
+					} else {
+                        setQuiz();
+					}
+                });
+
+                function shuffle(arr){
+                    var i, j, tmp;
+                    for(i=arr.length-1; i>=0; i--){
+                        j = Math.floor(Math.random()*(i+1));
+                        tmp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = tmp;
+					}
+					return arr;
+				}
+
+				function checkAnswer(node){
+                    console.log(currentNum, node);
+                    if(isAnswerd) return;
+                    isAnswerd = true;
+					if(node.textContent===quizeSet[currentNum-1].a[0]){
+					    node.classList.add('correnct');
+					    node.textContent += '...Correct!';
+                        score++;
+					} else {
+					    node.classList.add('wrong');
+                        node.textContent += '...Wrong!';
+					}
+					btn.classList.remove('disabled');
+                    // 最後の設問
+                    if(currentNum===(quizeSet.length)){
+                        btn.textContent = 'show score';
+                    }
+				}
+
+				function setQuiz(){
+                    isAnswerd = false;
+                    btn.classList.add('disabled');
+                    btn.className = 'disabled';
+                    // 初期化
+                    answers.textContent=null;
+
+                    question.textContent = quizeSet[currentNum].q;
+                    shuffledAnsweres = shuffle(quizeSet[currentNum].a.slice());
+                    for(var i=0; i<quizeSet[currentNum].a.length; i++){
+                        var li = document.createElement('li');
+                        li.textContent = shuffledAnsweres[i];
+                        li.addEventListener('click', function(){
+                            checkAnswer(this);
+                        });
+                        answers.appendChild(li);
+                    }
+
+                    currentNum++;
+
+				}
+
+                setQuiz();
+
+            })();
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,23 @@
+@keyframes shake {
+    0%{transform: rotate(8deg) translate(1px, 0);}
+    50%{transform: rotate(-8deg) translate(-1px, 0);}
+    100%{transform: rotate(8deg) translate(1px, 0);}
+}
+
+@keyframes purun2 {
+    0%   { transform: scale(1.0, 1.0) translate(0%, 0%); }
+    15%  { transform: scale(1.1, 1.1) translate(0%, 4%); }
+    30%  { transform: scale(1.2, 0.9) translate(0%, 7%); }
+    50%  { transform: scale(0.9, 1.2) translate(0%, -7%); }
+    70%  { transform: scale(1.1, 0.9) translate(0%, 4%); }
+    100% { transform: scale(1.0, 1.0) translate(0%, 0%); }
+}
+@keyframes purun {
+    0% { transform:translateY(0) }
+    10% { transform:translateY(0) }
+    20% { transform:translateY(-2px) }
+    40% { transform:translateY(0) }
+    60% { transform:translateY(-2px) }
+    80% { transform:translateY(0) }
+    100% { transform:translateY(0) }
+}

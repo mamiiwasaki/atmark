@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>___CONTENTS_NAME___</title>
+    ___HEAD___
+    ___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+    <div id="nav-wrapper">
+        <!-- Nav -->
+        <nav id="nav">
+            ___NAVI___
+        </nav>
+    </div>
+</div>
+<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">オセロ</span>
+							</header>
+<pre class="brush: js;">
+// const-----------------
+var DEFAULT_CELL_CNT = 8;    // デフォルトは８マス
+var BLACK = 1;
+var WHITE = 2;
+var STONE = [];
+STONE[BLACK] = &#039;url(&quot;../images/chara/cat_black.png&quot;)&#039;;
+STONE[WHITE] = &#039;url(&quot;../images/chara/cat_white.png&quot;)&#039;;
+var STONE_STR = [];
+STONE_STR[BLACK] = &#039;くろ&#039;;
+STONE_STR[WHITE] = &#039;しろ&#039;;
+var PLAY_TYPE = 1;    // 1:対人 2: AI
+
+
+
+// global-----------------
+var cell_cnt = DEFAULT_CELL_CNT;    // 石盤のマス数
+var player = BLACK;                    // 打ち手。先手は黒
+var field = [];                        // マスの状態を保持する
+var score = [];                        // スコア
+score[BLACK] = 0;
+score[WHITE] = 0;
+var next_hand = [];                    // 次の手があるか
+next_hand[BLACK] = true;
+next_hand[WHITE] = true;
+
+
+/*--------------------------------------------
+ *
+ * clickEvent
+ */
+function clickEvent(y, x){
+console.log(&#039;----------------&#039;);
+    // クリックしたマスの座標を取得
+    if(this.id){
+    var ele = document.getElementById(this.id);
+    var y = parseInt(ele.id.substr(-2,1));
+    var x = parseInt(ele.id.substr(-1,1));
+    }
+
+    // 相手
+    var enemy = (player === BLACK) ? WHITE : BLACK;
+
+    initLine();
+    //----------------------------
+    // ひっくり返るマスの情報を取得
+    changeable_field = checkChangeable(y, x, player);
+    // ひっくり返せるマスがなかったらreturn
+    if(changeable_field===false){
+        return;
+    }
+    // クリックしたマス
+    document.getElementById(&#039;p&#039;+y+x).style.backgroundImage = STONE[player];
+    field[y][x] = player;
+
+    //markLine(changeable_field);
+    //----------------------------
+    // 石をひっくり返す
+    // field情報を更新
+    for(var i in changeable_field){
+        for(var j in changeable_field[i]){
+            console.log(123,changeable_field[i], changeable_field[i][j]);
+
+            var yy = parseInt(changeable_field[i][j].substr(0,1));
+            var xx = parseInt(changeable_field[i][j].substr(1,1));
+            field[yy][xx] = player;
+            //console.log(player, y, x, STONE[player]);
+            document.getElementById(&#039;p&#039;+yy+xx).style.backgroundImage = STONE[player];
+        }
+    }
+    //----------------------------
+    // スコア
+    calcScore();
+
+    //----------------------------
+    // 次の打ち手
+    player = (player===BLACK) ? WHITE : BLACK;
+    document.getElementById(&#039;player&#039;).innerHTML = STONE_STR[player];
+
+//AI();
+
+    setTimeout(function(){
+        //----------------------------
+        // 全部のマスが埋まったら終了
+        if((score[BLACK]+score[WHITE])===(cell_cnt*cell_cnt)){
+            hantei();
+            document.getElementById(&#039;player&#039;).innerHTML = &#039;&#039;;
+            return;
+
+        //-------------------------------------------------------------------
+        // 次のターンで、打つ手があるかチェックする
+        } else {
+            if(checkNextHand()===false){
+                next_hand[player] = false;
+                alert(STONE_STR[player]+&#039; の打つ手がありません。スキップします。A&#039;);
+                player = (player===BLACK) ? WHITE : BLACK;
+                document.getElementById(&#039;player&#039;).innerHTML = STONE_STR[player];
+            }
+        }
+    },500);
+}
+
+
+
+
+document.getElementById(&#039;btn_test&#039;).addEventListener(&#039;click&#039;, function(){
+    AI();
+});
+function AI(){
+var max = 0;
+    for(var y=1; y&lt;=cell_cnt; y++){
+        for(var x=1; x&lt;=cell_cnt; x++){
+            // チェック
+            changeable_field = checkChangeable(y, x, player);
+            if(changeable_field===false){
+                return;
+            }
+            console.log(&#039;aaaaaaa&#039;, y,x);
+            return;
+var cnt = 0;
+                //var enemy = (player===BLACK) ? WHITE : BLACK;
+                clickEvent(y, x);
+                //player = enemy;
+            //    player = (player===BLACK) ? WHITE : BLACK;
+            /*
+                for(var i in changeable_field){
+                    for(var j in changeable_field[i]){
+                        cnt++;
+                    }
+                    console.log(y, x, cnt);
+                }
+                */
+        }
+    }
+}
+
+/*
+ * 指定のマスが、ひっくり返せるマスの座標を配列で返す
+ * ひっくり返せるセルがなかったらfalseを返す
+ */
+function checkChangeable(y, x, player){
+//console.log(&#039;player: &#039;+player+&quot;: &quot;,y, x, field[y][x]);
+
+    // 選択した箇所に石が置かれている場合はスルー
+    if(field[y][x]!==0){
+        return false;
+    }
+
+    // 相手
+    var enemy = (player === BLACK) ? WHITE : BLACK;
+    var enemy_cnt = 0; // ひっくり返せる敵の数
+
+    // 変更できるマスの座標
+    var changeable_field = [];
+    // 周囲8箇所
+    var round_y = [-1, -1, 0, 1, 1, 1, 0, -1];
+    var round_x = [0, 1, 1, 1, 0, -1, -1, -1];
+
+    // 周囲の敵を数える
+    for(var pos=0; pos&lt;8; pos++){
+        var tmp_y = y + round_y[pos];
+        var tmp_x = x + round_x[pos];
+
+        //-----------------------------------------------------
+        // 周囲8箇所のどれかに敵がいた時実行
+        if(field[tmp_y][tmp_x]===enemy){
+            //-----------------------------------------------------
+            // 敵の延長線上に自分がいるか。
+            var enemy_pos = &#039;&#039;+tmp_y+tmp_x;    // 敵の座標
+            var player_exists = false;
+            var tmp_field = [];
+
+            // 端までチェックしていく
+            for(var i=0; i&lt;cell_cnt; i++){
+                if(i&gt;0){
+                    tmp_y+= round_y[pos];
+                    tmp_x+= round_x[pos];
+                }
+
+                // 端まで行った、空白が見つかったらおわり。
+                if(field[tmp_y][tmp_x]===9 || field[tmp_y][tmp_x]===0) {
+                    break;
+                }
+                //document.getElementById(&#039;p&#039;+tmp_y+tmp_x).style.border=&#039;1px solid orange&#039;;    // 延長線上のマス
+                // 延長線上の自分がみつかったらおわり
+                if(field[tmp_y][tmp_x]===player){
+                    player_exists = true;
+                    break;
+                }
+                // 座標を取っておく。
+                tmp_field[i] = &#039;&#039;+tmp_y+tmp_x;
+                // ひっくり返せる敵の数
+                enemy_cnt++;
+            } // for to cell_cnt
+
+            // 敵の延長線上にplayerがいたら（ひっくり返せるマスがあったら）取っておいた座標情報を配列に。
+            if(player_exists!==false){
+                changeable_field[enemy_pos] = tmp_field;    // 座標情報
+                //changeable_field[enemy_pos][&#039;cnt&#039;] = enemy_cnt;    // 数
+            }
+        } //enemy
+    } // pos8
+    if(changeable_field.length===0){
+        return false;
+    }
+    return changeable_field;
+
+}
+</pre>
+
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+

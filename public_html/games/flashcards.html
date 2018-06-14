@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+				background: #e0e0e0;
+				color: #fff;
+				text-align: center;
+				font-size: 30px;
+			}
+			#btn_next{
+				border-radius: 4px;
+				width: 200px;
+				margin: 0 auto;
+				cursor: pointer;
+				box-shadow: 0 5px 0 #0088cc;
+				padding: 7px;
+				background: #00aaff;
+
+			}
+			#btn_next:hover{
+				opacity: 0.8;
+			}
+			#card{
+				margin: 60px auto 20px;
+				width: 400px;
+				height: 100px;
+				cursor: pointer;
+				font-size: 38px;
+				font-weight: bold;
+				line-height: 100px;
+				text-align: center;
+				perspective: 100px;
+				transform-style: preserve-3d;
+				transition: transform 0.8s;
+			}
+			#card_front, #card_back{
+				display: block;
+				border-radius: 5px;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				backface-visibility: hidden;
+			}
+			#card_front{
+				background: #fff;
+				color: #eee;
+			}
+			#card_back{
+				background: #00aaff;
+				transform: rotateY(180deg);
+			}
+			.open{
+				transform: rotateY(180deg);
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="card">
+					<div id="card_front">front</div>
+					<div id="card_back">back</div>
+				</div>
+				<div id="btn_next">next</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+				var words = [
+					{'en':'read', 'ja':'読む'},
+					{'en':'write', 'ja':'書く'},
+					{'en':'run', 'ja':'走る'},
+					{'en':'walk', 'ja':'歩く'}
+				];
+				var card = document.getElementById('card');
+				var cardFront = document.getElementById('card_front');
+				var cardBack = document.getElementById('card_back');
+				var btn_next = document.getElementById('btn_next');
+				card.addEventListener('click', function(){
+					flip();
+				});
+				btn_next.addEventListener('click', function(){
+					next();
+				});
+
+				function next(){
+					if(card.className==='open'){
+						card.addEventListener('transitionend', setCard);
+						flip();
+					} else {
+						setCard();
+					}
+				}
+				function flip(){
+					card.className = card.className==='open' ? '' : 'open';
+				}
+				function setCard(){
+					var rnd = Math.floor(Math.random()*words.length);
+					cardFront.textContent = words[rnd]['en'];
+					cardBack.textContent = words[rnd]['ja'];
+					card.removeEventListener('transitionend', setCard);
+				}
+				setCard();
+				window.addEventListener('keyup', function(e){
+					if(e.keyCode===70){
+						flip();
+					} else if(e.keyCode===78){
+						next();
+					}
+				});
+			})();
+		</script>
+	</body>
+</html>
+

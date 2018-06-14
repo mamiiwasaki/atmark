@@ -1,0 +1,64 @@
+構成
+
+index.html
+┣ css … css
+┣ img … 画像
+┣ js  … 自作JS
+┗ lib … JSライブラリ
+
+
+index.html
+┣ css
+┃ ┗ main.css
+
+
+index.html
+┣ img
+┃ ┣ bg.png
+┃ ┣ token0.png
+┃ ┗ token1.png
+
+
+index.html
+┣ lib
+┃ ┗ jquery.min.js
+
+
+index.html
+┣ js
+┃ ┣ ……
+┃ ┣ ……
+┃ ┗ ……
+
+
+game.～.js … 基本
+resouce.～.js … リソース
+reversi.～.js … リバーシ
+test.～.js … デバッグ
+
+
+基本
+game.core.js … 主要
+game.canvas.js … キャンバス
+game.anim.js … アニメ
+game.ui.js … UI
+
+
+リソース
+resouce.image.js … 画像
+resouce.font.js … フォント
+resouce.sound.js … 音声
+
+
+リバーシ
+reversi.core.js … 主要
+reversi.canvas.js … キャンバス
+reversi.effect.js … エフェクト
+reversi.reversi.js … リバーシ
+reversi.com.js … COM思考
+
+
+デバッグ
+test.～.js
+
+

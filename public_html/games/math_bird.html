@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" href="/css/keyframes.css?RELEASE=___RELEASE___">
+	<style>
+		html, body{
+			height: 100%;
+			user-select: none;
+			overflow: hidden;
+		}
+		#main{
+			height: 100%;
+			background-image: url(/images/bg/mori_jungle.png);/* 画像ファイルの指定 */
+			background-position: center center;/* 画像を常に天地左右の中央に配置 */
+			background-repeat: no-repeat;/* 画像をタイル状に繰り返し表示しない */
+			background-attachment: fixed;/* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+			background-size: cover;/* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+			background-color: #464646;/* 背景画像が読み込まれる前に表示される背景のカラー */
+			padding-top: 20px;
+		}
+		/*reset*/
+		#reset{
+			background: #f44336;
+			width: 50px;
+			height: 50px;
+			text-align: center;
+			line-height: 50px;
+			border-radius: 50%;
+			color: white;
+			text-style: none;
+			position: fixed;
+			bottom: 5px;
+			right: 5px;
+		}
+		/*-------------------------
+		 スコア
+		 */
+		#score{
+			width: 350px;
+			font-size: 25px;
+			margin-bottom: 10px;
+			margin: 0 auto 0;
+			display: flex;		/* Flexboxコンテナー */
+			flex-wrap: wrap;	/*flexコンテナに入るよう改行して表示*/
+		}
+		#now_cnt, #all_cnt, #plus, #minus{
+			width: 40px;
+		}
+		#now_cnt{
+			text-align: right;
+		}
+		#timer{
+			color: #f44336;
+			font-size: 30px;
+		}
+		/*#plus, #minus{*/
+			/*color: #fff;*/
+			/*margin: 3px;*/
+			/*text-align: center;*/
+			/*border-radius: 5px;*/
+			/*font-size: 45px;*/
+		/*}*/
+		.operator{
+			background: #d49ba5;
+			cursor: auto;
+		}
+		/*.operator_disabled {*/
+			/*background: #f5dfe1;*/
+			/*cursor: pointer;*/
+		/*}*/
+		/*--------------------------
+         設問
+         */
+		#question{
+			width: 338px;
+			height: 160px;
+			margin: 10px auto 10px;
+			/*opacity: 0.5;*/
+		}
+		#q_left, #q_right, #operator{
+			width: 145px;
+			height:150px;
+			border-radius: 10px;
+			text-align: center;
+			padding: 5px;
+			float: left;
+		}
+		#q_left, #q_right{
+			background: rgb(255,255,255,0.7);
+		}
+		#operator{
+			width: 35px;
+			text-align: center;
+			line-height: 180px;
+			border: none;
+			padding: 0;
+		}
+		.chara{
+			width: 60px;
+			animation: purun 1s infinite;
+		}
+		.chara + .chara{
+			margin-left: 5px;
+		}
+
+		/*--------------------------
+         数字
+         */
+		#number_stage{
+			border-radius: 10px;
+			width: 320px;
+			height: 200px;
+			line-height: 58px;
+			margin: 50px auto;
+			text-align: center;
+			background: rgb(255,255,255,0.7);
+		}
+		#number_stage img{
+			width: 60px;
+			cursor: move;
+			position: absolute;
+			animation: shake 1s infinite;
+		}
+		#number_stage img:hover{
+			animation-name: shake;
+			animation-duration: .2s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+			width: 80px;
+			/*transform: translate(-35px, -135px);*/
+		}
+
+		/*--------------------------
+        /* タブレット */
+		@media all and (min-width: 768px) {
+			#question{
+				width: 800px;
+				height: 200px;
+				margin: 20px auto 10px;
+				/*background: #96dd3b;*/
+			}
+			#left, #right, #operator{
+				width: 382px;
+				height:180px;
+			}
+			#operator{
+				width: 35px;
+			}
+			.chara{
+				width: 70px;
+				/*animation: purun 0.8s linear 0s 1;*/
+				animation: purun 1s infinite;
+			}
+
+			/*------------------------------
+			数字
+			 */
+			#number_stage{
+				border-radius: 10px;
+				width: 600px;
+				height: 100px;
+				line-height: 58px;
+			}
+			#number_stage img{
+				width: 65px;
+				/*transition: 0.3s;*/
+			}
+			#number_stage img:hover{
+				width: 80px;
+			}
+		}
+
+		/* 画像をロールオーバーしたら1回転する */
+		img{
+			transition:transform 0.5s ease-out;
+		}
+		.move{
+			transition:transform 0.5s ease-out;	/*?*/
+			transform:rorate(180deg);		/*??*/
+			position: absolute;
+			top: 210px;
+			left: 210px;
+			transition: all 1s;
+		}
+		/*-------------------------
+		 message
+		*/
+		#img_message, #img_animal{
+			display: none;
+			position: absolute;
+			margin: 0 auto;
+		}
+		#img_message{
+			width: 300px;
+			left: 100px;
+		}
+		#img_animal{
+			width: 50px;
+			top: 200px;
+			left: 500px;
+		}
+	</style>
+</head>
+<body>
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Main-->
+<div id="main">
+	<div id="container" class="container">
+		<a href="" id="reset">reset</a>
+		<!-- score -->
+		<div id="score">
+			<div id="now_cnt"></div>
+			<div>/</div>
+			<div id="all_cnt"></div>
+			<div id="timer">0.00</div>
+		</div>
+		<!-- question -->
+		<div id="question">
+			<div id="q_left"></div>
+			<div id="operator"><img src="/images/operator/math_mark01_plus.png" width="30"></div>
+			<div id="q_right"></div>
+		</div>
+		<!-- number_stage -->
+		<div id="number_stage"></div>
+	</div>
+	<!-- message -->
+	<img src="/images/games/message_omedetou.png" id="img_message">
+	<img src="/images/animals/animal_mitsubachi.png" id="img_animal">
+</div>
+<script src="/js/jquery.min.js"></script>
+<script>
+    (function(){
+        'use strict';
+        //----------------------------
+        // const
+        var OPERATOR = '+';
+        var ALL_CNT = 10;
+
+        //----------------------------
+        // var
+        // var answer = document.getElementById('answer');
+        var operator = document.getElementById('operator');
+        // var plus = document.getElementById('plus');
+        // var minus = document.getElementById('minus');
+        var timer = document.getElementById('timer');
+        var img_animal = document.getElementById('img_animal');
+        var img_message = document.getElementById('img_message');
+
+        // 答え
+        var answer=0;
+        // 今の設問
+        var now_cnt = 1;
+        // timer
+        var startTime = null;
+        var timer_id ;
+
+        var isPlay = false;
+
+        // 画面サイズ
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+        console.log(windowWidth, windowHeight);
+
+        /**---------------------------------------------
+		 imgタグ要素を全て取得する
+		 */
+        var elm = document.getElementsByTagName("img");
+
+        /**---------------------------------------------
+         設問イメージを設定
+         */
+        var birds = [
+            'bird_hakuchou','bird_aokakesu','bird_kiji',
+            'bird_mejiro','bird_syoujou_koukanchou','bird_yairochou',
+            'bird_kinkurohajiro','bird_hato_ryokoubato','bird_syoujou_koukanchou',
+            'bird_tonbi','kodai_shisochou','bird_komadori',
+            'bird_tsubame','bird_kogamo','bird_inko'
+        ];
+
+        var q_left = document.getElementById('q_left');
+        var q_right = document.getElementById('q_right');
+
+        // 設問セット
+        setQuestion();
+
+        // init
+        function setQuestion(){
+            answer = 0;
+            operator.textContent = OPERATOR;
+
+            document.getElementById('now_cnt').textContent = now_cnt;
+            document.getElementById('all_cnt').textContent = ALL_CNT;
+
+            timer.textContent = '0.00';
+            // img
+            img_message.style.left = '30px';
+            img_animal.style.left = '500px';
+            img_animal.style.top = '200px';
+            img_message.style.display = 'none';
+            img_animal.style.display = 'none';
+
+            setChara(q_left);
+            setChara(q_right);
+            setNumbers();
+		}
+        /*
+         * タイマー
+         */
+        function runTimer(){
+            timer.textContent=((Date.now()-startTime)/1000).toFixed(2);
+            timer_id = setTimeout(runTimer, 12);
+        }
+
+        /**---------------------------------------------
+		 * 設問キャラをセット
+		 */
+        function setChara(obj){
+            obj.innerHTML = '';	// initialize
+            var cnt = 1+Math.floor(Math.random() * 4);	// 0を含まない
+
+            for(var i=0; i<cnt; i++){
+                var img = document.createElement('img');
+                img.src = '/images/birds/' + birds[Math.floor(Math.random()*birds.length)] + '.png';
+                img.className = 'chara';
+                obj.appendChild(img);
+            }
+            // 答え
+            answer+= parseInt(cnt+0);
+        }
+
+        /**---------------------------------------------
+         * 答えの数字をセット
+         */
+        function setNumbers() {
+            var number_stage = document.getElementById('number_stage');
+            var clientRect = number_stage.getBoundingClientRect();
+            var x = clientRect.left + 10;
+            var y = clientRect.top - 40;
+
+            number_stage.innerHTML = '';
+
+            for (var num = 0; num < 10; num++) {
+                // 数字画像をappend
+                var img = document.createElement('img');
+                img.className = 'num num_shake';
+                img.src = '/images/numbers/candle_number' + num + '.png';
+                number_stage.appendChild(img);
+                // 座標
+                if (num > 0) {
+                    x += 60;
+                }
+                if (num === 5) {
+                    x = clientRect.left + 10;
+                    y += 100;
+                }
+                img.style.left = x + 'px';
+                img.style.top = y + 'px';
+
+                // イベントリスナー登録
+                // 正解の数字だったら、クリックできる
+                if (num === answer) {
+                    img.addEventListener("click", moveToAnswerPanel, false);
+                }
+            }
+        }
+
+        /**---------------------------------------------
+		 数字タップ
+		 正解だったら数字画像を大きくして移動する
+		 */
+		function moveToAnswerPanel(){
+
+            if(now_cnt===(ALL_CNT)) {
+                // ALL_CNT になったら終了！----------------------------
+                // タイマーストップ
+                clearInterval(timer_id);
+                // TODO 数字のプルプルが消せない・・・
+                this.classList.remove('num_shake');
+
+                // おめでとう
+                $('#img_message').css('display', 'block');
+                $('#img_message').animate({top: "40px"}, 600);
+
+            } else {
+                // 次の問題--------------------------
+                this.classList.remove('num_shake');
+                var ele = $(this);
+                var left, top, width;
+                left = windowWidth/2-120;
+                top = windowHeight/2-300;
+                width = windowWidth/10+250;
+                // タイマー
+                if(isPlay===false){
+                    startTime = Date.now();
+                    // set timer
+                    runTimer();
+                    isPlay = true;
+                }
+                // 画面中央へ
+                $(this).animate({
+                    left: left
+                    ,top: top
+                    ,width: width
+                }, {
+                    duration: 700,
+                    progress: function () {
+                        // ele.css({
+                        // 	transform: 'rotate(' + 200 + 'deg)'
+                        // });
+                        ele.css.zIndex=0;
+                        ele.animate({left:"0", top:"0", width:"+2000px", opacity:0});
+                    },
+                    complete: function () {
+                        // 設問設置
+                        setQuestion();
+                    }
+                });
+                now_cnt++;
+                document.getElementById('now_cnt').textContent = now_cnt;
+			}
+		}
+    })();
+
+</script>
+</body>
+</html>
+

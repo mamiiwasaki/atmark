@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+			}
+			#btn{
+				width: 200px;
+				height: 200px;
+				border-radius: 50%;
+				font-size: 26px;
+				font-weight: bold;
+				text-align: center;
+				line-height: 200px;
+				background: #aaaaff;
+				margin: 20px auto;
+				cursor: pointer;
+				opacity: 0.9;
+				box-sizing: 0 10px 0 #efefef;
+				border: 3px solid #efefef;
+				user-select: none;
+			}
+			#btn:hover{
+				opacity: 1;
+
+			}
+			#btn.pushed{
+				margin-top: 26px;
+				box-shadow: 0 4px 0 #efefef;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="btn">?</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+
+				var btn = document.getElementById('btn');
+				var results = ['very good luck', 'bad luck', 'good luck'];
+
+				btn.addEventListener('click', function(){
+//					var n = Math.floor(Math.random()*results.length);
+//					this.textContent = results[n];
+					// 確変
+					var n = Math.random();
+					if(n<0.05){
+						this.textContent = results[0];
+					} else if(n<0.2){
+						this.textContent = results[1];
+					} else {
+						this.textContent = results[2];
+
+					}
+				});
+				btn.addEventListener('mousedown', function(){
+					this.className = 'pushed';
+				});
+				btn.addEventListener('mouseup', function(){
+					this.className = '';
+				});
+			})();
+		</script>
+	</body>
+</html>
+

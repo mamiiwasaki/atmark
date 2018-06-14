@@ -1,0 +1,142 @@
+	<!DOCTYPE HTML>
+	<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		___HIGHT_JS___
+		<style>
+			table{
+				table-layout: fixed;
+				width: 300px;
+				height: 300px;
+				border-collapse: collapse;
+				border: 2px solid #d49ba5;
+				text-align:center;
+			}
+			th{
+				border: 1px solid #fff;
+				background-color: #d49ba5;
+				text-align:center;
+				color: #fff;
+			}
+			td{
+				border: 1px solid #d49ba5;
+			}
+		</style>
+	</head>
+	<body>
+
+	<!-- Header -->
+	<div id="header2">
+		<div id="nav-wrapper">
+			<!-- Nav -->
+			<nav id="nav">
+				___NAVI___
+			</nav>
+		</div>
+	</div>
+	<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">九九表</span>
+							</header>
+							<table id="tbl"></table>
+							<pre class="brush: html;">
+								&lt;table id=&quot;tbl&quot;&gt;&lt;/table&gt;
+							</pre>
+							<pre class="brush: css">
+								table{
+									table-layout: fixed;
+									width: 300px;
+									height: 300px;
+									border-collapse: collapse;
+									border: 2px solid #d49ba5;
+									text-align:center;
+								}
+								th{
+									border: 1px solid #fff;
+									 background-color: #d49ba5;
+									text-align:center;
+									color: #fff;
+								}
+								td{
+									border: 1px solid #d49ba5;
+								}
+							</pre>
+							<pre class="brush: js">
+								var data = [1,2,3,4,5,6,7,8,9];
+								var tbl = document.getElementById('tbl');
+								//var x, y, i, j;
+
+								// header
+								var tr = document.createElement('tr');
+								tr.innerHTML = '&lt;th>&lt;/th>';
+								for(var y=0; y&lt;9; y++){
+									tr.innerHTML += '&lt;th>'+data[y]+'&lt;/th>';
+								}
+								tbl.appendChild(tr);
+
+								// kuku
+								for(var x=0; x&lt;data.length; x++){
+									// tr
+									var tr = document.createElement('tr');
+									tr.innerHTML = '&lt;th>'+data[x]+'&lt;/th>';
+
+									for(var y=0; y&lt;data.length; y++){
+										var td = document.createElement('td');
+										td.innerHTML = data[x]*data[y];
+										tr.appendChild(td);
+									}
+									tbl.appendChild(tr);
+								}
+							</pre>
+
+
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+	var data = [1,2,3,4,5,6,7,8,9];
+	var tbl = document.getElementById('tbl');
+	//var x, y, i, j;
+
+	// header
+	var tr = document.createElement('tr');
+	tr.innerHTML = '<th></th>';
+	for(var y=0; y<9; y++){
+		tr.innerHTML += '<th>'+data[y]+'</th>';
+	}
+	tbl.appendChild(tr);
+
+	// kuku
+	for(var x=0; x<data.length; x++){
+		// tr
+		var tr = document.createElement('tr');
+		tr.innerHTML = '<th>'+data[x]+'</th>';
+
+		for(var y=0; y<data.length; y++){
+			var td = document.createElement('td');
+			td.innerHTML = data[x]*data[y];
+			tr.appendChild(td);
+		}
+		tbl.appendChild(tr);
+	}
+</script>

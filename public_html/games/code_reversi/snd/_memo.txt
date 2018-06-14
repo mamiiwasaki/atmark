@@ -1,0 +1,27 @@
+音楽：魔王魂
+http://maoudamashii.jokersounds.com/
+
+se0
+	戦闘16 - 戦闘系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/se_maoudamashii_battle16.html
+
+se1
+	マジカル01 - マジカル系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/se_maoudamashii_magical01.html
+
+bgm0
+	村03b - 村系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/game_maoudamashii_5_village03b.html
+
+bgm1
+	カジノ04 - カジノ系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/game_maoudamashii_5_casino04.html
+
+win
+	ジングル05 - ジングル系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/se_maoudamashii_jingle05.html
+
+lose
+	ワンポイント06 - ワンポイント系フリー音楽素材一覧-フリー音楽素材/魔王魂
+	http://maoudamashii.jokersounds.com/archives/se_maoudamashii_onepoint06.html
+

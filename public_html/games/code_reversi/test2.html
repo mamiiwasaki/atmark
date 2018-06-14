@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="target">ID target</div>
+<div class="targets">class targets1</div>
+<div class="targets">
+	<h2>class targets2</h2>
+</div>
+<div class="targets">class targets3</div>
+
+
+
+
+<div class="sample-div">
+クリックでこのdivのクラス名をアラート表示
+</div>
+
+<ul class="sample-list">
+	<li>menu1</li>
+	<li>menu2</li>
+	<li>menu3</li>
+</ul>
+<style>
+</style>
+
+</body>
+<script>
+	// 指定したIDを持つ要素の値を返す
+	var target_id = document.getElementById('target');
+	//console.log(target_id);
+
+	// 指定したクラスリスト内の個々の要素を取得する
+	var targets_class = document.getElementsByClassName('targets');
+	//console.log(targets_class);
+	for(var i=0; i<targets_class.length; i++){
+	//	console.log(targets_class[i]);
+	}
+	// 指定したクラスのうち更に特定の要素だけでイベントを起こす
+	for(var i=0; i<targets_class.length; i++){
+		targets_class[i].addEventListener('click', function(e){
+	//		console.log(e.target);
+		});
+	}
+
+
+	var target_id = document.querySelector('#target');
+	console.log(target_id);
+
+	var targets_class = document.querySelectorAll('.targets');
+	console.log(targets_class);
+
+
+var cl = document.querySelector('.sample-div');
+cl.onclick = function(){
+	alert(cl.className);
+}
+
+var listArray = document.querySelectorAll('.sample-list li');
+for(var i=0; i<listArray.length; i++){
+	listArray[i].onclick=function(){
+		console.log(this.innerHTML);
+	}
+}
+</script>
+</html>

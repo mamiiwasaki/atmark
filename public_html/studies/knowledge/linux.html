@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Header -->
+<!-- Main -->
+<div id="main">
+	<div id="container" class="container">
+		<v id="study">
+			___SUBMENU___
+
+
+			<h2>圧縮・解答</h2>
+			<h3>tar.gz</h3>
+			<pre class="quote">
+				圧縮 tar -zcvf xxxx.tar.gz directory
+				tar -zxvf xxxx.tar.gz
+			</pre>
+			<h3>zip</h3>
+			<pre class="quote">
+				圧縮 zip -r xxxx.zip director
+				解凍 unzip xxxx.zip
+			</pre>
+
+			<pre class="quote">
+				c: 新しいtarファイルを作る (create)
+				v: 圧縮・解凍状況を表示（基本的にvは指定しなくてもいいが状況がわからないので精神衛生上良くない） (verbose)
+				f: 圧縮ファイル名指定 (filename)
+				x: 解凍 (extract)
+				z, gz, j, bz2, J, xz
+			</pre>
+
+			<h3>ディレクトリ圧縮・解凍</h3>
+
+			<pre class="quote">
+				cd /tmp<br>
+				tar -zcvf gmo_gkuru.tar.gz /var/service/gkuru
+
+
+				tar -zcvf gmo_gkuru_code.tar.gz /var/service/gkuru/code
+				tar -zcvf gmo_gkuru_htdocs.tar.gz /var/service/gkuru/htdocs
+			</pre>
+
+			<pre class="quote">
+				// 圧縮 logも
+				tar czhvf /home/backup/gkuru20190312.tar.gz /home/gkuru
+				// code, htdocs, confのみ
+				tar czhvf gkuru20190312.tar.gz --exclude logs --exclude status --exclude backup --exclude var --exclude bin --exclude .git --exclude doc /home/gkuru
+				// 解凍
+				tar xvzf
+			</pre>
+			<h3>rsync</h3>
+			<pre class="quote">
+				$exclude = "--exclude logs --exclude status --exclude backup --exclude var --exclude bin --exclude .git --exclude doc";
+			</pre>
+
+
+
+			<h3>DBダンプ・リストア</h3>
+			<pre class="quote">
+				// ダンプ
+				mysqldump -u ".DB_USER." -p".DB_PASS." ".DB_NAME." | gzip > gkuru.dump.gz
+				// リストア
+				zcat gkuru.dump.gz | mysql -u user -p password gkuru
+			</pre>
+
+
+			<pre>
+				リモートサーバーのファイルリストを取得する
+				ssh gkuru@rel.jtec.tools 'find /home/gkuru-demo'
+
+
+				$cmd = "ssh gkuru@rel.jtec.tools 'find /home/gkuru-demo'";
+echo $cmd."<br>";
+        exec( $cmd, $output, $ret );
+        print_r( $output );
+			</pre>
+
+
+
+
+
+
+
+			<h2>いろいろ</h2>
+<pre>
+
+
+
+
+</pre>
+	</div>
+	</div>
+</div>
+</body>
+</html>

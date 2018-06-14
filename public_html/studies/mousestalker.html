@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">マウスストーカー</span>
+							</header>
+							<pre class="brush: css">
+								.ms{
+									position: fixed;
+									width: 16px;
+									opacity: 0.5;
+									left: -200px;
+								}
+							</pre>
+
+							<pre class="brush: js">
+								// global
+								var ms;
+
+								// ストーカーをappend
+								var img = document.createElement('img');
+								img.classList.add('ms');
+								img.src = '/images/chara/cat_black.png';
+								img.id = 'ms';
+								document.body.appendChild(img);
+								ms = document.getElementById('ms');
+
+								document.addEventListener('mousemove', function(e){
+									ms.style.left = (event.clientX + 15) + 'px';
+									ms.style.top  = (event.clientY + 15) + 'px';
+								}, false);
+							</pre>
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+	// global
+	var ms;
+
+	// ストーカーをappend
+	var img = document.createElement('img');
+	img.classList.add('ms');
+	img.src = '/images/chara/cat_black.png';
+	img.id = 'ms';
+	document.body.appendChild(img);
+	ms = document.getElementById('ms');
+
+	document.addEventListener('mousemove', function(e){
+		ms.style.left = (event.clientX + 15) + 'px';
+		ms.style.top  = (event.clientY + 15) + 'px';
+	}, false);
+</script>
+

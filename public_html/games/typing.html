@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+				font-family: 'Courier New', sans-serif;
+				text-align: center;
+			}
+			#main{
+				height: 100%;
+			}
+			#target{
+				padding-top: 40px;
+				font-size: 48px;
+				letter-spacing: 3px;
+			}
+			.info{
+				color: #ccc;
+			}
+
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<p id="target"></p>
+				<p class="info">
+					Letters count: <span id="score"></span>,
+					Miss count: <span id="miss"></span>,
+					Remaining Time: <span id="timer"></span>
+				</p>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+
+				var TIMER = 20;
+
+				var words = [
+					'apple',
+					'happy',
+					'sky',
+					'air',
+					'border',
+					'test',
+					'thank you',
+					'imagine',
+					'fun',
+					'hand cream',
+					'juice',
+					'coffee'
+				];
+				var currentWord;
+				var currentLocation;
+				var score ;
+				var miss;
+				var timer;
+				var target = document.getElementById('target');
+				var scoreLabel = document.getElementById('score');
+				var missLabel = document.getElementById('miss');
+				var timerLabel = document.getElementById('timer');
+				var isStarted;
+				var timerId;
+
+				/*
+				初期化
+				 */
+				function init(){
+					currentWord = 'click to start';
+					currentLocation = 0;
+					score = 0;
+					miss = 0;
+					timer = TIMER;
+					target.innerHTML = currentWord;
+					scoreLabel.innerHTML = score;
+					missLabel.innerHTML = miss;
+					timerLabel.innerHTML = timer;
+					isStarted = false;
+				}
+				init();
+
+				function updateTimer(){
+					timerId = setTimeout(function(){
+						timer--;
+						timerLabel.innerHTML = timer;
+						if(timer<0){
+							var accuracy = (score+miss)===0 ? '0.00' : ((score/(score+miss))*100).toFixed(2);
+							alert(score+' letters, '+accuracy+'% accuracy');
+							init();
+							clearTimeout(timerId);
+							return;
+						}
+						updateTimer();
+					}, 1000);
+				}
+
+				/*
+				set
+				 */
+				function setTarget(){
+					currentWord = words[Math.floor(Math.random()*words.length)];
+					target.innerHTML = currentWord;
+					currentLocation = 0;
+					updateTimer();
+				}
+				/*
+				click start
+				 */
+				window.addEventListener('click', function(){
+					if(!isStarted){
+						isStarted = true;
+						setTarget();
+					}
+				})
+
+
+				window.addEventListener('keyup', function(e){
+					if(!isStarted){
+						return;
+					}
+					if(String.fromCharCode(e.keyCode)===currentWord[currentLocation].toUpperCase()){
+						currentLocation++;
+						var placeholder = '';
+						for(var i=0; i<currentLocation; i++){
+							placeholder += '_';
+						}
+						target.innerHTML = placeholder+currentWord.substring(currentLocation);
+						score++;
+						scoreLabel.innerHTML = score;
+						if(currentLocation===currentWord.length){
+							setTarget();
+						}
+					} else {
+						miss++;
+						missLabel.innerHTML = miss;
+					}
+
+				});
+
+			})();
+		</script>
+	</body>
+</html>
+

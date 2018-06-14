@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=0" />
+    <title>Reversi</title>
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="fnt/ArchivoBlack.css" />
+  <!-- game -->
+    <script src="js/game.canvas.js"></script>
+    <script src="js/game.core.js"></script>
+  <!-- resouce -->
+    <script src="js/resouce.image.js"></script>
+  <!-- reversi -->
+    <script src="js/reversi.canvas.js"></script>
+    <script src="js/reversi.reversi.js"></script>
+  <!-- init -->
+    <script>
+	$(function() {
+		// リソース（画像）の読み込み
+		var r = [];
+		r.push(resouce.image.load("bg", "img/bg.png"));
+
+		// 読み込み待機
+		$.when.apply($, r).then(function() {
+			reversi.canvas.initCnvs();	// キャンバスの初期化
+			reversi.canvas.drwBg();		// 背景描画
+			reversi.canvas.drwSqAll();	// 盤面全描画
+
+			// 変数の初期化
+			var c = reversi.canvas.c;
+			var l = reversi.canvas.l;
+			var rng = game.core.inRng;
+
+			// マスのクリック
+			$(c.cnvs).click(function(e) {
+				var x = e.offsetX * game.canvas.scl;
+				var y = e.offsetY * game.canvas.scl;
+
+				// 盤面内か確認
+				if (! rng(x, y, l.brdX, l.brdY, l.brdW, l.brdH)) {return}
+
+				// 何マス目か計算
+				var sqX = ((x - l.brdX) / l.sqSz) | 0;
+				var sqY = ((y - l.brdY) / l.sqSz) | 0;
+				console.log(sqX, sqY);
+			});
+		});
+	});
+    </script>
+  </head>
+  <body>
+    <div id="reversi"></div>
+  </body>
+</html>

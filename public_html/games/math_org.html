@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+				overflow: hidden;
+			}
+			#main{
+				height: 100%;
+			}
+			/*
+			設問
+			 */
+			#question{
+				margin: 20px auto 10px;
+				width: 380px;
+				height: 200px;
+			}
+			#left, #right, #operator{
+				width: 170px;
+				height:170px;
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				text-align: center;
+				padding: 5px;
+			}
+			#operator{
+				width: 5px;
+				text-align: center;
+				line-height: 180px;
+				border: none;
+			}
+			#left{
+				float: left;
+			}
+			#operator{
+				float: left;
+			}
+			#right{
+				float: right;
+			}
+			.chara{
+				width: 46px;
+				/*animation: purun 0.8s linear 0s 1;*/
+				animation: purun 1s infinite;
+			}
+			.chara + .chara{
+				margin-left: 5px;
+			}
+			/**
+			答え
+			 */
+			#answer{
+				width: 130px;
+				height:130px;
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				text-align: center;
+				margin: 0 auto 30px;
+			}
+			/*
+			数字
+			 */
+			#number_stage{
+				border: 1px solid #d2dbf8;
+				border-radius: 10px;
+				width: 380px;
+				height: 58px;
+				line-height: 58px;
+				margin: 0 auto;
+				text-align: center;
+			}
+			#number_stage img{
+				width: 32px;
+				cursor: move;
+				position: absolute;
+				z-index: 1000;
+				/*transition: 0.3s;*/
+			}
+			#number_stage img:hover{
+				animation-name: shake;
+				animation-duration: .2s;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+				width: 50px;
+				transform: translate(-150px, -150px);
+			}
+			.number+.number{
+				/*margin-left: 15px;*/
+			}
+
+			@keyframes shake {
+				0%{transform: rotate(8deg) translate(1px, 0);}
+				50%{transform: rotate(-8deg) translate(-1px, 0);}
+				100%{transform: rotate(8deg) translate(1px, 0);}
+			}
+
+			@keyframes purun2 {
+				0%   { transform: scale(1.0, 1.0) translate(0%, 0%); }
+				15%  { transform: scale(0.9, 0.9) translate(0%, 5%); }
+				30%  { transform: scale(1.3, 0.8) translate(0%, 10%); }
+				50%  { transform: scale(0.8, 1.3) translate(0%, -10%); }
+				70%  { transform: scale(1.1, 0.9) translate(0%, 5%); }
+				100% { transform: scale(1.0, 1.0) translate(0%, 0%); }
+			}
+			@keyframes purun {
+				0% { transform:translateY(0) }
+				10% { transform:translateY(0) }
+				20% { transform:translateY(-2px) }
+				40% { transform:translateY(0) }
+				60% { transform:translateY(-2px) }
+				80% { transform:translateY(0) }
+				100% { transform:translateY(0) }
+			}
+			.drag {
+				z-index: 1001;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<!--<div id="question">-->
+					<!--<div id="left"></div>-->
+					<!--<div id="operator"><img src="/images/operator/math_mark01_plus.png" width="32"></div>-->
+					<!--<div id="right"></div>-->
+				<!--</div>-->
+				<!--<div id="answer"></div>-->
+				<!--<div id="number_stage"></div>-->
+			<!--</div>-->
+			<!--	<div draggable="true" ondragstart="event.dataTransfer.setData('text/plain', 'この文字列はドラッグができます')">
+                    この文字列はドラッグが<strong>できます</strong>。
+                </div>
+                <div id="columns">
+                    <div class="column" draggable="true"><header>A</header></div>
+                    <div class="column" draggable="true"><header>B</header></div>
+                    <div class="column" draggable="true"><header>C</header></div>
+                </div>
+                ドラッグイベント-->
+			<!--dragstart-->
+			<!--drag-->
+			<!--dragenter-->
+			<!--dragleave-->
+			<!--dragover-->
+			<!--drop-->
+			<!--dragend-->
+				<style type="text/css">
+					div.dd{ width:100%; height:100px }
+					div#dragarea{ background-color:#80ffff }
+					div#droparea{ background-color:#ffff80 }
+					div.dd img{ width:100px; height:100px }
+				</style>
+			<div class="dd" id="dragarea">
+				<img class="chara" src="/images/numbers/candle_number1.png" id="a" style="left: 198.5px;">
+				<img class="chara" src="/images/numbers/candle_number2.png" id="b" style="left: 198.5px;">
+				<img class="chara" src="/images/numbers/candle_number3.png" id="c" style="left: 198.5px;">
+				<img class="chara" src="/images/numbers/candle_number4.png" id="d" style="left: 198.5px;">
+				<img class="chara" src="/images/numbers/candle_number5.png" id="e" style="left: 198.5px;">
+
+			</div>
+			<div class="dd" id="droparea"></div>
+		</div>
+		<script>
+			(function(){
+			    'use strict';
+//imgタグ要素を全て取得する
+                var elm = document.getElementsByTagName("img");
+
+//全imgタグにdragstartイベントを追加する
+                for ( var i=0 ; i < elm.length ; i++ )
+                {
+                    elm[i].addEventListener("dragstart", function(evt){
+                        evt.dataTransfer.setData("text/plain",evt.target.id);
+                        evt.stopPropagation();
+                    },false);
+                }
+
+
+                var obj1 = document.getElementById("droparea");
+
+//ドロップされる側のコードは変化なし
+                obj1.addEventListener( "drop" , function(evt){
+                    var id = evt.dataTransfer.getData( "text/plain" );
+
+                    var obj2 = document.getElementById( id );
+                    if( obj2 )
+                    {
+                        obj1.appendChild( obj2 );  //要素を移動する
+                    }
+
+                    evt.preventDefault();
+                }, false );
+
+//２つのイベントでデフォルト動作を抑制
+                obj1.addEventListener( "dragenter" , function(evt){
+                    evt.preventDefault();
+                }, false );
+                obj1.addEventListener( "dragover" , function(evt){
+                    evt.preventDefault();
+                }, false );
+		
+
+
+
+			    /**
+			    設問を設定
+			     */
+			    var birds = [
+			        'bird_hakuchou','bird_aokakesu','bird_kiji',
+			        'bird_mejiro','bird_syoujou_koukanchou','bird_yairochou',
+			        'bird_kinkurohajiro','bird_hato_ryokoubato','bird_syoujou_koukanchou',
+			        'bird_tonbi','kodai_shisochou','bird_komadori',
+			        'bird_tsubame','bird_kogamo','bird_inko'
+				];
+
+			    var left = document.getElementById('left');
+			    var right = document.getElementById('right');
+
+			    setChara(left);
+			    setChara(right);
+				// キャラをセット
+				function setChara(obj){
+                    var cnt = Math.floor(Math.random() * 6+1);
+
+                    for(var i=0; i<cnt; i++){
+                        var img = document.createElement('img');
+                        img.src = '/images/birds/' + birds[Math.floor(Math.random()*birds.length)] + '.png';
+                        img.className = 'chara';
+                        obj.appendChild(img);
+                    }
+				}
+
+                /**
+				 * 数字をセット
+                 */
+                var number_stage = document.getElementById('number_stage');
+                var clientRect = number_stage.getBoundingClientRect();
+                var x = clientRect.left;
+
+                for(var n=0; n<10; n++){
+                    // 数字画像をappend
+                    var img = document.createElement('img');
+                    img.className = 'chara';
+                    img.src = '/images/numbers/candle_number'+n+'.png';
+                    number_stage.appendChild(img);
+                    // 横座標
+                    if(n===0){
+                        x += 15;
+					} else {
+                        x += 35;
+                    }
+                    img.style.left= x+'px';
+
+                    // イベントリスナー登録
+                    img.addEventListener("mousedown", mdown, false);
+                    img.addEventListener("touchstart", mdown, false);
+				}
+
+			})();
+
+
+
+
+            //マウスが押された際の関数
+            function mdown(e) {
+// console.log('mdown');
+                //クラス名に .drag を追加
+                this.classList.add("drag");
+                // position absolute!!
+				this.style.position = 'absolute';
+                //タッチデイベントとマウスのイベントの差異を吸収
+                if(e.type === "mousedown") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
+
+                //要素内の相対座標を取得
+                x = event.pageX - this.offsetLeft;
+                y = event.pageY - this.offsetTop;
+
+                //ムーブイベントにコールバック
+                document.body.addEventListener("mousemove", mmove, false);
+                document.body.addEventListener("touchmove", mmove, false);
+            }
+            //マウスカーソルが動いたときに発火
+            function mmove(e) {
+                // console.log('mmove');
+                //ドラッグしている要素を取得
+                var drag = document.getElementsByClassName("drag")[0];
+
+                //同様にマウスとタッチの差異を吸収
+                if(e.type === "mousemove") {
+                    var event = e;
+                } else {
+                    var event = e.changedTouches[0];
+                }
+
+                //フリックしたときに画面を動かさないようにデフォルト動作を抑制
+                e.preventDefault();
+
+                //マウスが動いた場所に要素を動かす
+                drag.style.top = event.pageY - y + "px";
+                drag.style.left = event.pageX - x + "px";
+
+                //マウスボタンが離されたとき、またはカーソルが外れたとき発火
+                drag.addEventListener("mouseup", mup, false);
+                document.body.addEventListener("mouseleave", mup, false);
+                drag.addEventListener("touchend", mup, false);
+                document.body.addEventListener("touchleave", mup, false);
+
+            }
+            //マウスボタンが上がったら発火
+            function mup(e) {
+                var drag = document.getElementsByClassName("drag")[0];
+
+                //ムーブベントハンドラの消去
+                document.body.removeEventListener("mousemove", mmove, false);
+                drag.removeEventListener("mouseup", mup, false);
+                document.body.removeEventListener("touchmove", mmove, false);
+                drag.removeEventListener("touchend", mup, false);
+
+                //クラス名 .drag も消す
+                drag.classList.remove("drag");
+            }
+
+
+
+		</script>
+	</body>
+</html>
+

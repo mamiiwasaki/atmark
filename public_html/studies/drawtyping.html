@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row half">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u">
+						<section>
+							<header>
+								<span class="byline">draw typing</span>
+							</header>
+							<p class="typingDisplay">おはよう！　きょうはエドガー・アラン・ポーの誕生日。</p>
+							<p class="typingDisplay">波にのまれた少年２人をドローン使い救助、世界初か。</p>
+
+							<pre class="brush: js">
+								window.addEventListener('load', function(){
+									drawTyping('.typingDisplay');
+								});
+								function drawTyping(attribute){
+									Array.prototype.forEach.call(document.querySelectorAll(attribute), function(node){
+										var i=0;
+										var baseStr = node.innerHTML;
+										var newStr = '';
+										var timer_id = setInterval(function(){
+											if(i>baseStr.length){
+												clearInterval(timer_id);
+											}
+											newStr += baseStr.charAt(i);
+											node.innerHTML = newStr;
+											i++;
+										}, 50);
+									});
+								}
+							</pre>
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+	window.addEventListener('load', function(){
+		drawTyping('.typingDisplay');
+	});
+	function drawTyping(attribute){
+		Array.prototype.forEach.call(document.querySelectorAll(attribute), function(node){
+			var i=0;
+			var baseStr = node.innerHTML;
+			var newStr = '';
+			var timer_id = setInterval(function(){
+				if(i>baseStr.length){
+					clearInterval(timer_id);
+				}
+				newStr += baseStr.charAt(i);
+				node.innerHTML = newStr;
+				i++;
+			}, 50);
+		});
+	}
+</script>

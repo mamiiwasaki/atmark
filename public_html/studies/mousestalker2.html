@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Header -->
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">マウスストーカー２</span>
+							</header>
+							<pre class="brush: css">
+								.star{
+									position: absolute;
+									font-size: 2px;
+								}
+							</pre>
+
+							<pre class="brush: js">
+								// global
+								var colours = new Array('#99ccff', '#ffcc99', '#ff99cc', '#ffe599', '#ccccff', '#d8ff65', '#ccccff', '#ff99b2', '#ffd865', '#ff8c65', '#d8ff65', '#ffd8cc');
+								var star_cnt = colours.length; // スターの数
+								var YgetDelay=0, XgetDelay=0, Ydelay=0, Xdelay=0, step=0.2, currStep=0, my=0, mx=0;
+
+								// 星たちappend
+								for (i=0; i < star_cnt; i++){
+									var sp = document.createElement('span');
+									sp.innerHTML = '★';
+									sp.id = 'star'+i;
+									sp.classList.add('star');
+									sp.style.color = colours[i];
+									document.body.appendChild(sp);
+								}
+
+								/*
+								 * マウスをストーカーする星
+								 */
+								window.addEventListener('mousemove', function(e){
+									mx = e.pageX;
+									my = e.pageY;
+									Ydelay = YgetDelay += (my-YgetDelay)*1/10;
+									Xdelay = XgetDelay += (mx-XgetDelay)*1/10;
+									// 星たちの位置
+									for (i=0; i < star_cnt; i++){
+										var layer = document.getElementById("star"+i);
+										layer.style.top  = Ydelay+100*Math.sin((5*Math.sin((currStep-15.99)/10))+i*70)*Math.sin((currStep)/10)*Math.cos((currStep+i*25)/10)+"px";
+										layer.style.left = Xdelay+180*Math.cos((5*Math.sin((currStep-15.99)/10))+i*70)*Math.sin((currStep)/10)*Math.cos((currStep+i*25)/10)+"px";
+									}
+									currStep+=step;
+								}, false);
+							</pre>
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>
+<script>
+// global
+var colours = new Array('#99ccff', '#ffcc99', '#ff99cc', '#ffe599', '#ccccff', '#d8ff65', '#ccccff', '#ff99b2', '#ffd865', '#ff8c65', '#d8ff65', '#ffd8cc');
+var star_cnt = colours.length; // スターの数
+var YgetDelay=0, XgetDelay=0, Ydelay=0, Xdelay=0, step=0.2, currStep=0, my=0, mx=0;
+
+// 星たちappend
+for (i=0; i < star_cnt; i++){
+	var sp = document.createElement('span');
+	sp.innerHTML = '★';
+	sp.id = 'star'+i;
+	sp.classList.add('star');
+	sp.style.color = colours[i];
+	document.body.appendChild(sp);
+}
+
+/*
+ * マウスをストーカーする星
+ */
+window.addEventListener('mousemove', function(e){
+	mx = e.pageX;
+	my = e.pageY;
+	Ydelay = YgetDelay += (my-YgetDelay)*1/10;
+	Xdelay = XgetDelay += (mx-XgetDelay)*1/10;
+	// 星たちの位置
+	for (i=0; i < star_cnt; i++){
+		var layer = document.getElementById("star"+i);
+		layer.style.top  = Ydelay+100*Math.sin((5*Math.sin((currStep-15.99)/10))+i*70)*Math.sin((currStep)/10)*Math.cos((currStep+i*25)/10)+"px";
+		layer.style.left = Xdelay+180*Math.cos((5*Math.sin((currStep-15.99)/10))+i*70)*Math.sin((currStep)/10)*Math.cos((currStep+i*25)/10)+"px";
+	}
+	currStep+=step;
+}, false);
+</script>

@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			/*----------------------------
+				セル
+			 */
+			.cell, .cell10{
+				width: 2.4em;
+				height: 2.4em;
+				background-size: 2.6em;
+				background-color: #80BA8E;
+				cursor: pointer;
+				border: 1px solid black;
+				float: left;
+				text-align: center;
+				color: white;
+				font-size: 1em;
+				font-weight: bold;
+			}
+			.cell10{
+				width: 1.9em;
+				height: 1.9em;
+				background-size: 2.1em;
+			}
+			.noborder{
+				border: none;
+			}
+			/*----------------------------
+				ボタン
+			 */
+			.btn{
+				width: 60px;
+				height: 30px;
+				line-height: 30px;
+				background-color: #FFE5DA;
+				color: #666;
+				border-radius: 3px;
+				text-align: center;
+				cursor: pointer;
+				margin-left: 5px;
+				font-size: 19px;
+			}
+			.btn:hover{
+				padding-top: 2px;
+			}
+			.btn_cell{}
+			.btn_active{
+				background-color: #aec4de;
+				cursor: auto;
+			}
+			/*----------------------------
+				head
+			 */
+			#container .head{
+				width: 320px;
+				height: 40px;
+				line-height: 40px;
+				margin-bottom: 10px;
+				/*background: blue;*/
+			}
+			#container .head div{
+				float: left;
+			}
+			.score, .next, .guide{
+				width: 40px;
+				color: red;
+				font-size: 1.4em;
+				margin-left: 4px;
+				float: left;
+			}
+			.next{
+				width: 50px;
+				float: left;
+			}
+			.guide{
+				width: 25px;
+				margin-left: 20px;
+				cursor: pointer;
+				float: right;
+			}
+			.guide:hover{
+				padding-top: 2px;
+			}
+			img{
+				cursor: auto;
+			}
+			/*----------------------------
+				タブレット
+			 */
+			@media (min-width: 768px) {
+				.cell, .cell10 {
+					width: 4.4em;
+					height: 4.4em;
+					background-size: 4.6em;
+					font-size: 25px;
+				}
+				.cell10{
+					width: 3.9em;
+					height: 3.9em;
+					background-size: 4.1em;
+				}
+				.btn{
+					width: 80px;
+					height: 40px;
+					line-height: 40px;
+					font-size: 22px;
+				}
+				#container .head {
+					width: 520px;
+					height: 4.4em;
+					line-height: 4.4em;
+				}
+				.score, .next {
+					width: 50px;
+					color: #f44336;
+					font-size: 2.6em;
+				}
+				.next{
+					width: 84px;
+				}
+				.guide{
+					width: 35px;
+					margin-left: 20px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<section>
+					<div class="head">
+						<div><img src='../images/chara/cat_black.png' class='cell noborder'></div>
+						<div id='score_black' class='score'>2</div>
+						<div><img src='../images/chara/cat_white.png' class='cell noborder'></div>
+						<div id='score_white' class='score'>2</div>
+						<div style="font-size: 80%;">つぎは</div><div id='player' class='next'></div>
+						<div><img src='../images/hint01.png' class='guide' id="btn_guide"></div>
+					</div>
+					<!-- borad -->
+					<div id="test"></div><div id="board"></div>
+					<div style="clear: both;"></div>
+				</section>
+				<footer>
+					<div class="flex">
+						<div class="btn btn_cell" id="btn_cell_cnt_6" data-cnt="6">6</div>
+						<div class="btn btn_cell" id="btn_cell_cnt_8" data-cnt="8">8</div>
+						<div class="btn btn_cell" id="btn_cell_cnt_10" data-cnt="10">10</div>
+						<div style="clear: both;"></div>
+
+						<div class="btn" id="btn_reset">reset</div>
+						<!--<div class="btn" id="btn_test">対戦</div>-->
+
+					</div>
+
+				</footer>
+			</div>
+		</div>
+
+	<!-- sound -->
+	<audio id="sound_black" preload="auto">
+		<source src="/sounds/cat1a.mp3" type="audio/mp3">
+	</audio>
+	<audio id="sound_white" preload="auto">
+		<source src="/sounds/cat1b.mp3" type="audio/mp3">
+	</audio>
+	</body>
+</html>
+<script src="./othello.js?release=___RELEASE___"></script>
+<script>
+// const-----------------
+var DEFAULT_CELL_CNT = 8;	// デフォルトは８マス
+var BLACK = 1;
+var WHITE = 2;
+var STONE = [];
+STONE[BLACK] = 'url("../images/chara/cat_black.png")';
+STONE[WHITE] = 'url("../images/chara/cat_white.png")';
+var STONE_STR = [];
+STONE_STR[BLACK] = 'くろ';
+STONE_STR[WHITE] = 'しろ';
+var PLAY_TYPE = 1;	// 1:対人 2: AI
+
+
+// global-----------------
+var cell_cnt = DEFAULT_CELL_CNT;	// 石盤のマス数
+var player = BLACK;					// 打ち手。先手は黒
+var field = [];						// マスの状態を保持する
+var score = [];						// スコア
+score[BLACK] = 0;
+score[WHITE] = 0;
+var next_hand = [];					// 次の手があるか
+next_hand[BLACK] = true;
+next_hand[WHITE] = true;
+
+
+/*--------------------------------------------
+ *
+ * clickEvent
+ */
+function clickEvent(y, x){
+console.log(this.id+'-------------------');
+	// クリックした要素のIDから、マスの座標を取得
+	var tmpa = this.id.split('_');
+	var y = tmpa[1];
+	var x = tmpa[2];
+
+	// 相手
+	var enemy = (player === BLACK) ? WHITE : BLACK;
+
+	initLine();
+
+	//----------------------------
+	// ひっくり返るマスの情報を取得
+	changeable_field = checkChangeable(y, x, player);
+	// ひっくり返せるマスがなかったらreturn
+	if(changeable_field===false){
+	    console.log('no changable_field');
+		return;
+	}
+	// クリックしたマス
+	this.style.backgroundImage = STONE[player];
+	field[y][x] = player;
+
+	//markLine(changeable_field);
+	//----------------------------
+	// 石をひっくり返す
+	// field情報を更新
+	for(var i in changeable_field){
+		for(var j in changeable_field[i]){
+			console.log(123,changeable_field[i], changeable_field[i][j]);
+			// sound
+			if(player===BLACK){
+                document.getElementById("sound_black").play();
+			} else {
+                document.getElementById("sound_white").play();
+            }
+
+			var tmpa = changeable_field[i][j].split('_');
+			var yy = tmpa[1];
+			var xx = tmpa[2];
+			field[yy][xx] = player;
+			//console.log('trun(player,y,x)', changeable_field[i][j], player, yy, xx);
+			document.getElementById('p_'+yy+'_'+xx).style.backgroundImage = STONE[player];
+		}
+	}
+	//----------------------------
+	// スコア
+	calcScore();
+
+	//----------------------------
+	// 次の打ち手
+	player = (player===BLACK) ? WHITE : BLACK;
+	document.getElementById('player').innerHTML = STONE_STR[player];
+
+//AI();
+
+	setTimeout(function(){
+		//----------------------------
+		// 全部のマスが埋まったら終了
+		if((score[BLACK]+score[WHITE])===(cell_cnt*cell_cnt)){
+			hantei();
+			document.getElementById('player').innerHTML = '';
+			return;
+
+		//-------------------------------------------------------------------
+		// 次のターンで、打つ手があるかチェックする
+		} else {
+			if(checkNextHand()===false){
+				next_hand[player] = false;
+				alert(STONE_STR[player]+' の打つ手がありません。スキップします。A');
+				player = (player===BLACK) ? WHITE : BLACK;
+				document.getElementById('player').innerHTML = STONE_STR[player];
+			}
+		}
+	},500);
+}
+
+
+
+
+// document.getElementById('btn_test').addEventListener('click', function(){
+// 	AI();
+// });
+function AI(){
+var max = 0;
+	for(var y=1; y<=cell_cnt; y++){
+		for(var x=1; x<=cell_cnt; x++){
+			// チェック
+			changeable_field = checkChangeable(y, x, player);
+			if(changeable_field===false){
+				return;
+			}
+			console.log('aaaaaaa', y,x);
+			return;
+var cnt = 0;
+				//var enemy = (player===BLACK) ? WHITE : BLACK;
+				clickEvent(y, x);
+				//player = enemy;
+			//	player = (player===BLACK) ? WHITE : BLACK;
+			/*
+				for(var i in changeable_field){
+					for(var j in changeable_field[i]){
+						cnt++;
+					}
+					console.log(y, x, cnt);
+				}
+				*/
+		}
+	}
+}
+
+
+
+/*-----------------------------
+ * 石盤のマス数を変更する
+ */
+var cell_cnt_btns = document.querySelectorAll('.btn_cell');
+Array.prototype.forEach.call(cell_cnt_btns, function(node){
+	node.addEventListener('click', function(){
+	    if(!confirm('マスのかずをかえてもいいですか？')) return false;
+		// 一旦ボタン初期化
+		Array.prototype.forEach.call(cell_cnt_btns, function(node){
+			node.classList.remove('btn_active');
+		});
+		cell_cnt = this.getAttribute('data-cnt');
+		// ボタンをアクティブに
+		this.classList.add('btn_active');
+		// init
+		init();
+	});
+});
+/*-----------------------------
+ * load
+ */
+window.addEventListener('load', function(){
+	init();
+	// デフォルトのマス数のボタンをアクティブに
+	document.getElementById('btn_cell_cnt_'+cell_cnt).classList.add('btn_active');
+});
+/*-----------------------------
+ * reset
+ */
+document.getElementById('btn_reset').addEventListener('click', function(){
+    if(!confirm('リセットしてもいいですか？')) return false;
+	location.reload();
+});
+/*-----------------------------
+ * guide
+ */
+document.getElementById('btn_guide').addEventListener('click', function(){
+	initLine();
+
+	for(var y=1; y<=cell_cnt; y++){
+		for(var x=1; x<=cell_cnt; x++){
+			// チェック
+			changeable_field = checkChangeable(y, x, player);
+
+			if(changeable_field!==false){
+				// 枠線
+				cnt = markLine(changeable_field);
+				// 選択可能なセル
+				document.getElementById('p_'+y+'_'+x).style.border='1px solid red';
+				document.getElementById('p_'+y+'_'+x).innerHTML = cnt;
+			}
+		}
+	}
+});
+
+
+
+
+</script>

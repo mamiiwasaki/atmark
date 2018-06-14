@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			canvas {
+				display: block;
+				margin: auto;
+				border: 1px solid black;
+			}
+			@media screen and (max-width: 480px){
+				/* 0px～480pxの画面サイズにCSSを適応 */
+				html, body{
+					height: 100%;
+					user-select: none;
+				}
+				.button{
+					font-size: 0.6em;
+					margin: 3px;
+					padding: 2px;
+					background-color: #FF7A90;
+					font-size: 12px;
+					width: auto;
+				}
+				.btn_key{
+					width: 50px;
+					font-size: 2em;
+					margin-left: 15px;
+				}
+
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<section>
+					<audio id="clearsound" src="sound/pop.ogg" preload="auto"></audio>
+						<div class="flex" width="500" style="display: block; margin: auto;">
+							<span class="button" id="btn_start">スタート</span>
+							<span class="button" id="btn_pause">ポーズ</span>
+						</div>
+						<!-- canvas -->
+						<canvas></canvas>
+						<div class="flex" style="margin-bottom: 5px; margin-top: 5px;">
+							<div class="button btn_key" data-key="left"><span class="fa fa-chevron-circle-left"></span></div>
+							<div class="button btn_key" data-key="right"><span class="fa fa-chevron-circle-right"></span></div>
+							<div class="button btn_key" data-key="down"><span class="fa fa-chevron-circle-down"></span></div>
+							<div class="button btn_key" data-key="rotate"><span class="fas fa-redo-alt"></span></div>
+							<div class="button btn_key" data-key="rotate"><span class="svg-inline--fa fa-redo fa-w-16 fa-5x"></span></div>
+						</div>
+
+					</div>
+						<div class="flex flex-column items-center justify-center br2 ba bw3 b--white shadow-2 pa4 bg-orange2 white">
+							<svg aria-hidden="true" data-prefix="fas" data-icon="redo" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-redo fa-w-16 fa-3x"><path fill="currentColor" d="M500.333 0h-47.411c-6.853 0-12.314 5.729-11.986 12.574l3.966 82.759C399.416 41.899 331.672 8 256.001 8 119.34 8 7.899 119.526 8 256.187 8.101 393.068 119.096 504 256 504c63.926 0 122.202-24.187 166.178-63.908 5.113-4.618 5.354-12.561.482-17.433l-33.971-33.971c-4.466-4.466-11.64-4.717-16.38-.543C341.308 415.448 300.606 432 256 432c-97.267 0-176-78.716-176-176 0-97.267 78.716-176 176-176 60.892 0 114.506 30.858 146.099 77.8l-101.525-4.865c-6.845-.328-12.574 5.133-12.574 11.986v47.411c0 6.627 5.373 12 12 12h200.333c6.627 0 12-5.373 12-12V12c0-6.627-5.373-12-12-12z" class=""></path></svg></div>
+
+					<script src='js/tetris.js'></script>
+					<script src='js/render.js'></script>
+					<a href="http://coderecipe.jp/recipe/iHjJBJx9Si/" target="_blank">src</a>
+				</section>
+	</body>
+</html>
+<script>
+// スタート
+document.getElementById('btn_start').addEventListener('click', function(){
+	newGame();  // ゲームを開始する
+	setInterval( render, 30 );
+});
+// ポーズ/リスタート
+document.getElementById('btn_pause').addEventListener('click', function(){
+	isPause = !isPause;
+	this.innerHTML = isPause ? 'リスタート' : 'ポーズ';
+});
+/*
+ * コントローラー
+ */
+Array.prototype.forEach.call(document.querySelectorAll('.btn_key'), function(ele){
+	ele.addEventListener('click', function(){
+		keyPress(ele.getAttribute('data-key'));
+	});
+});
+/*
+ キーボードを入力した時に一番最初に呼び出される処理
+ */
+document.body.onkeydown = function( e ) {
+	// キーに名前をセットする
+	var keys = {
+		37: 'left',
+		39: 'right',
+		40: 'down',
+		38: 'rotate'
+	};
+	if ( typeof keys[ e.keyCode ] != 'undefined' ) {
+		// セットされたキーの場合はtetris.jsに記述された処理を呼び出す
+		keyPress( keys[ e.keyCode ] );
+		// 描画処理を行う
+		// render();
+	}
+};
+</script>

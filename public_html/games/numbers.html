@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+			}
+			#main{
+				height: 100%;
+				background: #ccc;
+				font-family: 'Currier New', sans-serif;
+				font-size: 16px;
+			}
+			#container{
+				width: 210px;
+				margin: 0 auto;
+				color: #fff;
+
+			}
+			#board{
+				background: #fff;
+				padding: 10px;
+				border-radius: 8px;
+				display: flex;
+				flex-wrap: wrap;
+			}
+			.pannel{
+				cursor: pointer;
+				background: #00aaff;
+				width: 40px;
+				height: 40px;
+				margin: 5px;
+				border-radius: 5px;
+				box-shadow: 0 4px 0 #0088cc;
+				text-align: center;
+				line-height: 40px;
+				position: relative;
+			}
+			.pannel.hidden:after{
+				position:absolute;
+				content: '';
+				cursor: pointer;
+				background: lightgray;
+				width: 40px;
+				height: 40px;
+				border-radius: 5px;
+				box-shadow: 0 4px 0 lightgray;
+				top: 0;
+				left: 0;
+			}
+			.pannel.flipped{
+				background: lightgray;
+				box-shadow: 0 4px 0 gray;
+			}
+			#start{
+				cursor: pointer;
+				background: #f44336;
+				box-shadow: 0 5px 0 #d1483e;
+				padding: 7px;
+				margin-top: 10px;
+				border-radius: 5px;
+				text-align: center;
+			}
+			#start.restart{
+				background: #24b168;
+				box-shadow: 0 5px 0 #20995b;
+			}
+			#start:hover{
+				opacity: .8;
+			}
+			#start:active{
+				margin-top: 15px;
+				box-shadow: none;
+			}
+			#score{
+				/*float: right;*/
+			}
+
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div id="score">0.0</div>
+				<div id="board"></div>
+				<div id="start">start</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				'use strict';
+				var SIZE = 2;
+				var PANNEL_WIDTH = 50;
+				var BOARD_PADDING = 10;
+				var currentNum = 0;
+				var startTime=null;
+				var timer;
+				var isStarted = false;
+
+				function createPannel(num){
+					var pannel = document.createElement('div');
+					pannel.className = 'pannel hidden';
+					pannel.textContent = num;
+					/*
+					 * pannel click
+					 */
+					pannel.addEventListener('click', function(){
+						// 無効
+						if(this.className.indexOf('hidden')!==-1 || this.className.indexOf('flipped')!==-1){
+							return;
+						}
+						if(isStarted===false){
+							startTime = Date.now();
+							runTimer();
+						}
+						isStarted = true;
+						if((this.textContent-0)===currentNum){
+							this.className = 'pannel flipped';
+							currentNum++;
+						}
+						if(currentNum===(SIZE*SIZE)){
+							console.log('clear');
+							clearTimeout(timer);
+							currentNum = 0;
+							startTime = null;
+							isStarted = false;
+						}
+					});
+					return pannel;
+				}
+				/*
+				 * runtimer
+				 */
+				function runTimer(){
+					document.getElementById('score').textContent = ((Date.now()-startTime)/100).toFixed(2);
+					timer = setTimeout(function(){
+						runTimer();
+					}, 10);
+				}
+				/*
+				 * start, restart
+				 */
+				document.getElementById('start').addEventListener('click', function(){
+					var pannels = document.getElementsByClassName('pannel');
+					if(typeof timer !='undefined'){
+						clearTimeout(timer);
+					}
+					initBoard();
+					for(var i=0; i<pannels.length; i++){
+						pannels[i].className = 'pannel';
+					}
+					this.textContent = 'restart?';
+					this.className = 'restart';
+					startTime = null;
+					document.getElementById('score').textContent = '0.0';
+				});
+
+				/*
+				 * init
+				 */
+				function initBoard(){
+					var board = document.getElementById('board');
+					var pannels = [];
+					var pannel;
+
+					document.getElementById('container').style.width = PANNEL_WIDTH*SIZE+BOARD_PADDING*2+40+'px';
+
+					while(board.firstChild){
+						board.removeChild(board.firstChild);
+					}
+
+					for(var i=0; i<SIZE*SIZE; i++){
+						pannels.push(createPannel(i));
+					}
+					while(pannels.length){
+						pannel = pannels.splice(Math.floor(Math.random()*pannels.length), 1)[0];
+						board.appendChild(pannel);
+					}
+				}
+
+				initBoard();
+			})();
+		</script>
+	</body>
+</html>
+

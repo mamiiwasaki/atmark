@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=0" />
+    <title>Reversi</title>
+    <script src="lib/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="fnt/ArchivoBlack.css" />
+  <!-- game -->
+    <script src="js/game.canvas.js"></script>
+    <script src="js/game.core.js"></script>
+
+  <!-- init -->
+    <script>
+	$(function() {
+		// 縦横比固定でキャンバス作成
+		var id = "reversi";
+		var sz = game.core.getFitSz(10, 11);
+		var c = game.canvas.initCnvs(id, sz.w, sz.h);
+
+		// 全面色塗り
+		c.cntx.fillStyle = "#faa";
+		c.cntx.fillRect(0, 0, c.w, c.h);
+	});
+    </script>
+  </head>
+  <body>
+    <div id="reversi"></div>
+  </body>
+</html>

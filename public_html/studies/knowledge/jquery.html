@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>___CONTENTS_NAME___</title>
+    ___HEAD___
+    ___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+    <div id="nav-wrapper">
+        <!-- Nav -->
+        <nav id="nav">
+            ___NAVI___
+        </nav>
+    </div>
+</div>
+<!-- Header -->
+<!-- Main -->
+<div id="main">
+    <div id="container" class="container">
+        <div id="study">
+            ___SUBMENU___
+            <h2></h2>
+
+
+            <pre>
+                       ========================
+        セレクタ
+        html要素
+        id		#
+        class	.
+        > 	直下の要素
+        (space) それ以下の要素
+        .	複数の要素
+        +	隣接する要素
+        $('p, .item').css('color', 'red');
+        $('.item + .item').css('color', 'red');
+
+        ========================
+        フィルタ
+        :eq()
+        :gt(), :li()		greater, less
+        :even, :odd
+        :conteints()
+        :first, :last
+        $('#sub > li:gt(2)').siblings().css('color', 'red');
+
+        ========================
+        メソッドを使った DOM要素の指定
+        parent(), children()
+                next(), prev()
+        siblings()	- 兄弟要素
+        $('#sub > li:eq(2)').siblings().css('color', 'red');
+
+        ========================
+        属性セレクタ
+        [] で囲む
+        =			イコール
+        !=			以外
+        *=			を含む
+        ^=			から始まる
+        $=			で終わる
+        $('a[href$=jp]').css('color', 'red');
+
+        ========================
+        メソッド
+        .css	設定、取得
+            $('p').css('color', 'red');
+            console.log($('p').css('color'));
+        addClass, removeClass
+
+        メッソッドチェーン
+        $('p').css('color', 'red').css('background', 'blue');
+
+        attrメソッド 属性　取得、設定
+            var url = $('a').attr('href');
+            $('a').attr('href', 'http://www.google.co.jp');
+
+        dataメソッド
+            var dat = $('a').data('sitename');
+
+        ---タグの中身を操作するメソッド
+                        text, html, val, remove, empty
+
+        ---要素を追加するメソッド
+        before, after, (insertBefore, insertAfter)
+        prepend, append,(prependTo, appendTo)
+            var li = $('<li>').text('just added');
+            // before
+            $('ul > li:eq(1)').before(li);
+            // insert Before
+            li.insertBefore($('ul > li:eq(3)'));
+
+        -- エフェクトのメソッド
+        hide, show, fadeOut, fadeIn, toggle
+        $('#box').hide();
+        $('#box').hide('slow');	// ゆっくり隠す
+        $('#box').hide(800);	// 0.8秒かけて
+        $('#box').fadeOut(800);
+        $('#box').toggle(800);		// 表示されていたら隠し、隠れていたら表示
+        ★★★callback関数も指定できる！！処理が終わったら実行される
+        $('#box').fadeOut(2000, function(){
+            alert('hello');
+        });
+
+        ========================
+        イベント
+        click, mouseover, mouseover, mousemove
+
+        メソッドチェーンも使える!!
+        $('#box')
+                .mouseover(function(){
+                       $(this).css('background', 'green');
+                }).mouseout(function(){
+                    $(this).css('background', '');
+                }).mousemove(function(e){
+                    $(this).text(e.pageX);
+            });
+
+        //eventオブジェクト
+            abort	error	submit	reset	load	unload
+            blur	focus	change	click	dblclick	select
+            mouseout	mouseover	mousedown	mouseup	mousemove
+            keypress	keyup	keydown	dragdrop	move	resize
+
+        ========================
+        focus, blur, change
+        $('#name').
+                focus(function(){
+                   $(this).css('background', 'red');
+                }).blur(function(){
+                    $(this).css('background', '');
+            });
+
+
+
+
+
+        ★★★新しい要素の作り方！！！！
+        var li = $('<li>').text('Hello World');
+
+
+
+            </pre>
+
+            <!--<ul id="main">-->
+            <!--<li>0</li>-->
+            <!--<li class="item">1</li>-->
+            <!--<li class="item">2</li>-->
+            <!--<li>-->
+            <!--3-->
+            <!--<ul id="sub">-->
+            <!--<li>3-0</li>-->
+            <!--<li>3-1</li>-->
+            <!--<li class="item">3-2</li>-->
+            <!--<li class="item">3-3</li>-->
+            <!--<li>3-4</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <p>	<a href="http://google.com">google</a></p>
+            <p>		<a href="http://yahoo.co.jp">yahoo</a></p>
+            <p>		<a href="http://mami.tools">mami.tools</a></p>
+
+
+            <p>aaa</p>
+            <p>bbb</p>
+            <p>ccc</p>
+            <p>ddd</p>
+            <style>
+                #box{
+                    width: 200px;
+                    height: 200px;
+                    background: #00acc1;
+                }
+            </style>
+            <div id="box" >aaaaa</div>
+
+            <input type="text" id="name">
+            <select id="members" mame="members">
+                <option>dog</option>
+                <option>bird</option>
+                <option>cat</option>
+            </select>
+
+
+            <button>candy</button>
+
+
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jquery.min.js?release=___RELEASE___"></script>
+<script>
+    $(function(){
+        /*
+
+
+
+
+         */
+
+        $('button').click(function(){
+            var p = $('<p>').text('vanish').addClass('vanishi');
+            $(this).before(p);
+        });
+
+
+
+    });
+    </script>
+</body>
+</html>

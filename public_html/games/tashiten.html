@@ -1,0 +1,246 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;		/* 選択させない */
+			}
+			#main{
+				height: 100%;
+				background-image: url(/images/bg/hawaii_rainbow.png);/* 画像ファイルの指定 */
+				background-position: center center;/* 画像を常に天地左右の中央に配置 */
+				background-repeat: no-repeat;/* 画像をタイル状に繰り返し表示しない */
+				background-attachment: fixed;/* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+				background-size: cover;/* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+				background-color: #464646;/* 背景画像が読み込まれる前に表示される背景のカラー */
+			}
+			#container{
+				width: 250px;
+				margin: 30px auto 0;	/* 上30px, 中央寄せ */
+			}
+			.questions{
+				width: 250px;
+				height: 100px;
+				/*border: 1px solid #fbfaef;*/
+				/*border-radius: 5px;*/
+				/*background: #fdfcf1;*/
+				/*padding-top: 10px;*/
+				/*padding-left: 5px;*/
+				background: red;
+			}
+			.questions+.questions{
+				margin-top: 20px;
+			}
+			.question_inner{
+				width: 200px;
+				height: 100px;
+			}
+			#start, #stop{
+				margin-top: 15px;
+				width: 130px;
+				height: 20px;
+				text-align: center;
+				font-size: 20px;
+				color: #fff;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			#start{
+				background: #eb939a;
+				float: left;	/* 左寄せ */
+			}
+			#stop{
+				background: #5186b7;
+				float: right;	/* 右寄せ */
+			}
+			.pushed{
+				margin-top: 18px;
+				opacity: 0.8;
+			}
+			#result.good{
+				background: #ebdb8d;
+			}
+			#result.standby{
+				opacity: 0.5;
+			}
+			/*-------------------------
+			 message
+			*/
+			#img_message, #img_animal, #img_animal_ng{
+				display: none;
+				position: absolute;
+				margin: 0 auto;
+			}
+			#img_message{
+				width: 300px;
+				left: 100px;
+			}
+			#img_animal{
+				width: 100px;
+				top: 200px;
+				left: 500px;
+			}
+			#img_animal_ng{
+				width: 150px;
+				top: 420px;
+				left: 5px;
+			}
+			/* PC */
+			@media all and (min-width: 920px) {
+
+				#container{
+					width: 700px;
+					margin: 30px auto 0;	/* 上30px, 中央寄せ */
+					background: red;
+				}
+				.questions{
+					width: 200px;
+					height: 150px;
+					border: 1px solid #fbfaef;
+					border-radius: 5px;
+					background: #fdfcf1;
+					float: left;
+					padding-top: 30px;
+					padding-left: 5px;
+					background-image: url('/images/fukidashi/fukidashi06_2.png');
+					background-size:200px;
+					background-repeat: no-repeat;
+
+				}
+				.questions+.questions{
+					margin-left: 10px;
+				}
+				#img_message{
+					left: 400px;
+				}
+				#img_animal{
+					left: 920px;
+				}
+				#img_animal_ng{
+					width: 250px;
+					top: 200px;
+					left: 10px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main-->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="questions"><div class="question_inner"></div></div>
+				<div class="questions"><div class="question_inner"></div></div>
+				<div class="questions"><div class="question_inner"></div></div>
+			</div>
+		</div>
+	<!-- message -->
+	<img src="/images/games/message_omedetou.png" id="img_message">
+	<img src="/images/animals/fish_guppy.png" id="img_animal">
+	<img src="/images/animals/frog_hikigaeru.png" id="img_animal_ng">
+
+
+	<script>
+			(function(){
+				'use strict';
+
+				var SUM = 10;
+				var correct_no;	// 正解の設問番号
+
+				// 設問セット！
+                setQuestion();
+
+                //----------------------------------------
+                // 設問をセットする
+				function setQuestion(){
+                    // 正解の設問番号
+                    correct_no = Math.floor(Math.random()*3);
+                    // questionsをループしてセット
+                    Array.prototype.forEach.call(document.getElementsByClassName('question_inner'), function(node, n){
+						node.textContent='';
+                        // set
+                        // var elem = document.getElementsByTagName('div');
+                        setNumbers(node, n===correct_no);
+                    });
+				}
+
+
+				//----------------------------------------
+				// 数字画像をセット
+				function setNumbers(elem, correct_flg){
+				    var num1 = getRnd();
+				    if(correct_flg){
+				        // たしてん
+				        var num2 = SUM-num1;
+					} else {
+                        var num2 = getRnd();
+                        // num1+num2がSUMになってしまったら、もう一回num2をセット
+						if(num1+num2===SUM){
+							num2 = getRnd();
+						}
+                    }
+                    // 数字画像セット
+					createImg(elem, 'numbers2/number_'+num1+'.png', 80);
+                    createImg(elem, 'operator/math_mark01_plus.png', 30);
+					createImg(elem, 'numbers2/number_'+num2+'.png', 80);
+				}
+
+                //----------------------------------------
+				// 数字画像create
+				function createImg(elem, png, width){
+                    var img = document.createElement('img');
+                    img.setAttribute('src', '/images/'+png);
+                    img.setAttribute('width', width+'px');
+                    elem.appendChild(img);
+				}
+                //----------------------------------------
+                // 乱数取得
+                function getRnd() {
+                    return Math.floor(Math.random()*(SUM-1))+1;
+                }
+
+                //----------------------------------------
+                // questionsにイベントリスナー登録
+                Array.prototype.forEach.call(document.getElementsByClassName('questions'), function(node, n){
+                    node.addEventListener('click', function(){
+                        // --------------
+                        // せいかい
+                        if(n===correct_no) {
+                            // グッピー
+                            $('#img_animal').css('display', 'block');
+                            $('#img_animal').animate({
+                                left: "-50px"
+                            }, {
+                                duration: 700,
+                                complete: function () {
+                                    $('#img_animal_ng').css('display', 'none');
+                                    // 次の設問へ。
+                                    setQuestion();
+                                    $('#img_animal').css('left', '500px');
+                                }
+                            });
+                        // --------------
+                        // ふせいかい
+                        } else {
+                            // かえる
+                            $('#img_animal_ng').css('display', 'block');
+                        }
+                    });
+                });
+			})();
+		</script>
+	</body>
+</html>
+

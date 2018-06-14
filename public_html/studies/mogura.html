@@ -1,0 +1,250 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>___CONTENTS_NAME___</title>
+    ___HEAD___
+    ___HIGHT_JS___
+</head>
+<body>
+
+<!-- Header -->
+<div id="header2">
+    <div id="nav-wrapper">
+        <!-- Nav -->
+        <nav id="nav">
+            ___NAVI___
+        </nav>
+    </div>
+</div>
+<!-- Header -->
+
+	<!-- Main -->
+		<div id="main">
+			<div id="container" class="container">
+				<div class="row">
+
+					<!-- Sidebar -->
+					___SIDE_BAR___
+
+					<!-- Content -->
+					<div id="content" class="8u skel-cell-important">
+						<section>
+							<header>
+								<span class="byline">もぐら</span>
+							</header>
+
+							<pre class="brush: js;">
+// const-----------------
+var HP = 20;
+var ENEMY_SIZE = 60;
+/*
+ * Game
+ */
+var Game = function(){
+    this.is_end = false;
+    this.area = $(&#039;#area&#039;);
+    // もぐら
+    this.enemy_origin = $(&#039;.enemy&#039;);
+    this.enemys = [];
+    this.timer = 0;
+    // スコア
+    this.score_ele = $(&#039;#score&#039;);
+    this.score = 0;
+    // HP
+    this.hp_ele = $(&#039;#hp&#039;);
+    this.hp = HP;
+    this.hp_ele.text(this.hp);
+
+    //---------------------------------------
+    // 初期化
+    this.init = function(){
+this.is_end = false;
+this.core = 0;
+this.score_ele.text(0);
+this.hp = HP;
+this.hp_ele.text(HP);
+        // モグラオブジェクトを複数生成する
+        var enemy;
+        for(var i=0; i&lt;8; i++){
+            enemy = new Enemy(this);
+            enemy.ele = this.enemy_origin.clone();
+            enemy.init();
+            this.area.append(enemy.ele);
+            this.enemys.push(enemy);
+        }
+        // loop処理
+        this.loop();
+    };
+    //---------------------------------------
+    // 実行
+    this.run = function(){
+        for(var i=0; i&lt;this.enemys.length;i++){
+            this.enemys[i].run();
+        }
+    };
+    //---------------------------------------
+    // 終了
+    this.end = function(){
+        var message = &#039;GAME OVER !!!!&#039;;
+        this.hp_ele.text(message);
+        this.is_end = true;
+    $(&#039;#btn_start&#039;).removeClass(&#039;btn_disabled&#039;);
+        for(var i=0; i&lt;this.enemys.length;i++){
+            this.enemys[i].hide();
+        }
+    };
+    //---------------------------------------
+    // loop
+    this.loop = function(){
+        this.timer ++;
+        var timer_id = setTimeout(function(game){
+        if(game.hp&lt;=0){
+            // HPが0になったらゲームを終了
+            game.end();
+        } else {
+            game.run();
+            game.loop();
+        }
+        }, 200, this);
+    };
+    //---------------------------------------
+    // スコア
+    this.addScore = function(){
+        this.score++;
+        this.score_ele.text(this.score);
+    };
+    //---------------------------------------
+    // HP
+    this.damage = function(){
+        this.hp--;
+        this.hp_ele.text(this.hp);
+    };
+    //---------------------------------------
+    // 敵を攻撃する？？？？？？？
+    this.punchEnemy = function(enemy){
+        console.log(&#039;punchEnemy?????&#039;);
+        this.addScore();
+        enemy.data(&#039;is_dead&#039;, true);
+        enemy.remove();
+    };
+    //---------------------------------------
+    // 敵を隠す？？？？？？
+    this.hideEnemy = function(enemy){
+        setTimeout(function(game, enemy){
+            enemy.remove();
+            if(!game.is_end){
+                game.damage();
+            }
+        }, enemy.data(&#039;hide_time&#039;), this, enemy);
+    };
+
+};
+Game.prototype = {};
+
+
+/*
+ * 敵
+ */
+var Enemy = function(game){
+    this.game = game;
+    this.ele;
+    this.x;
+    this.y;
+    this.count = 0;
+    this.pop_time;
+    this.hide_time;
+    //---------------------------------------
+    // 初期化
+    this.init = function(){
+        this.count = parseInt(Math.random()*5)+2;
+        this.ele.click($.proxy(function(){
+            console.log(&#039;hit!!!!!!!!!!!!!!!!!!!!!!!!!!!!&#039;);
+            this.showFlower();
+            game.addScore();
+            this.fall();
+        }, this));
+    };
+    //---------------------------------------
+    // お花表示
+    this.showFlower = function(){
+        $(&#039;#flower&#039;).css(&#039;display&#039;, &#039;block&#039;);
+        $(&#039;#flower&#039;).fadeIn(50).delay(300).fadeOut(150, function(){$(&#039;#flower&#039;).css(&#039;display&#039;, &#039;none&#039;);});
+    }
+    //---------------------------------------
+    // 実行
+    this.run = function(){
+        this.count--;
+    //    console.log(&#039;count&#039;, this.count);
+        if(this.count === 0){
+            this.fall();
+        } else if(this.count === 2){
+            this.attack();
+        } else if(this.count === this.pop_time){
+            this.pop();
+        }
+    };
+    //---------------------------------------
+    // 出現
+    this.pop = function(game){
+        //console.log(&#039;pop&#039;);
+        this.x = parseInt(Math.random()*5) * ENEMY_SIZE;
+        this.y = parseInt(Math.random()*5) * ENEMY_SIZE;
+        this.hide_time = (parseInt(Math.random() * 15) + 9) * 100;
+        this.ele.css({
+            left : this.x,
+            top : this.y
+        }).show();
+        //console.log(this.x + &#039;:&#039; + this.y);
+    };
+    //---------------------------------------
+    // 攻撃
+    this.attack = function(){
+        //console.log(&#039;attack&#039;);
+        this.ele.addClass(&#039;attack&#039;);
+        this.game.damage();
+    };
+    //---------------------------------------
+    // 落ちる？
+    this.fall = function(game){
+        //console.log(&#039;fall&#039;);
+        this.count = parseInt(Math.random()*40)+9;
+
+        this.pop_time= parseInt(Math.random()*9)+5;
+        this.ele.removeClass(&#039;attack&#039;);
+        this.hide();
+    };
+    //---------------------------------------
+    // 隠す
+    this.hide = function(){
+        //console.log(&#039;hide&#039;);
+        this.ele.hide();
+    };
+};
+
+
+
+
+$(function(){
+    // DOM操作には処理時間がかかるため、ゲーム内ループで繰り返し使う要素は先に宣言しておく
+    var game = new Game();
+
+    $(&#039;#btn_start&#039;).click(function(){
+        $(this).addClass(&#039;btn_disabled&#039;);
+        game.init();
+        return false;
+    });
+});
+</pre>
+
+
+
+						</section>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	<!-- /Main -->
+
+	</body>
+</html>

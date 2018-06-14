@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>___CONTENTS_NAME___</title>
+	___HEAD___
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<style>
+		html, body{
+			height: 100%;
+			user-select: none;
+			overflow: hidden;
+			margin:0;
+			padding: 0;
+		}
+
+		#main{
+			height: 100%;
+			font-size: 50px;
+			background-image: url(/images/bg/bg_natural_sougen.jpg);/* 画像ファイルの指定 */
+			background-position: center center;/* 画像を常に天地左右の中央に配置 */
+			background-repeat: no-repeat;/* 画像をタイル状に繰り返し表示しない */
+			background-attachment: fixed;/* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+			background-size: cover;/* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+			background-color: #464646;/* 背景画像が読み込まれる前に表示される背景のカラー */
+			padding-top: 10px;
+		}
+		#container{
+			margin:0;
+			padding: 0;
+		}
+		#score, #screen, #numbers, #btn_next{
+			margin: 0 auto 0;
+			display: flex;		/* Flexboxコンテナー */
+			flex-wrap: wrap;	/*flexコンテナに入るよう改行して表示*/
+		}
+		/*-------------------------
+		 スコア
+		 */
+		#score{
+			width: 350px;
+			font-size: 25px;
+			margin-bottom: 10px;
+		}
+		#now_cnt, #all_cnt, #plus, #minus{
+			width: 40px;
+		}
+		#now_cnt{
+			text-align: right;
+		}
+		#timer{
+			color: #f44336;
+			font-size: 30px;
+		}
+		#plus, #minus{
+			color: #fff;
+			margin: 3px;
+			text-align: center;
+			border-radius: 5px;
+			font-size: 45px;
+		}
+		.operator{
+			background: #d49ba5;
+			cursor: auto;
+		}
+		.operator_disabled {
+			background: #f5dfe1;
+			cursor: pointer;
+		}
+
+		/*-------------------------
+		 スクリーン
+		 */
+		#screen{
+			width: 350px;
+		}
+		#q1, #q2, #answer{
+			width: 80px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			border: 1px solid #70AA7E;
+			border-radius: 5px;
+			margin: 5px;
+			background: #fff;
+		}
+		#operator, #wa{
+			width: 30px;
+			height: 80px;
+			line-height: 80px;
+			text-align: center;
+		}
+		/*-------------------------
+		 数字
+		 */
+		#numbers{
+			width: 212px;
+			height: 282px;
+			border-radius: 5px;
+			border-radius: 5px;
+		}
+		#numbers li{
+			width: 60px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			border: 1px solid #70AA7E;
+			border-radius: 5px;
+			background: #fff;
+			margin: 5px;
+			cursor: pointer;
+		}
+		#numbers li:hover{
+			background: #eee;
+		}
+		#numbers li:active{
+			border: #8ADDFD 2px solid;
+			box-sizing: border-box;
+		}
+        /*next_btn*/
+		#btn_next{
+			width: 212px;
+			height: 32px;
+			line-height: 32px;
+			text-align: center;
+			background: #dbf9c7;
+			color: #333;
+			margin-top: 25px;
+			border-radius: 5px;
+			font-size: 20px;
+			text-decoration: none;
+			padding-left: 50px;
+		}
+		/*-------------------------
+		 message
+		*/
+		#img_message, #img_animal{
+			display: none;
+			position: absolute;
+			margin: 0 auto;
+		}
+		#img_message{
+			width: 300px;
+			left: 100px;
+		}
+		#img_animal{
+			width: 50px;
+			top: 200px;
+			left: 500px;
+		}
+		/* タブレット */
+		@media all and (min-width: 768px) {
+			#img_message{
+				left: 200px;
+			}
+			#img_animal{
+				left: 768px;
+			}
+		}
+		/* PC */
+		@media all and (min-width: 920px) {
+			#img_message{
+				left: 400px;
+			}
+			#img_animal{
+				left: 920px;
+			}
+		}
+	</style>
+</head>
+<body>
+<!-- Header -->
+<div id="header2">
+	<div id="nav-wrapper">
+		<!-- Nav -->
+		<nav id="nav">
+			___NAVI___
+		</nav>
+	</div>
+</div>
+<!-- Main-->
+<div id="main">
+	<div id="container" class="container">
+		<div id="score">
+			<div id="plus"  class="operator">+</div>
+			<div id="minus" class="operator operator_disabled">-</div>
+			<div></div>
+			<div id="now_cnt"></div>
+			<div>/</div>
+			<div id="all_cnt"></div>
+			<div id="timer">0.00</div>
+		</div>
+		<div id="screen">
+			<div id="q1"></div>
+			<div id="operator"></div>
+			<div id="q2"></div>
+			<div id="wa">=</div>
+			<div id="answer"></div>
+		</div>
+
+		<ul id="numbers">
+			<li data-num="7">7</li>
+			<li data-num="8">8</li>
+			<li data-num="9">9</li>
+			<li data-num="4">4</li>
+			<li data-num="5">5</li>
+			<li data-num="6">6</li>
+			<li data-num="1">1</li>
+			<li data-num="2">2</li>
+			<li data-num="3">3</li>
+			<li data-num="0">0</li>
+			<li data-num="eraser"><img src="/images/eraser.png" width="50"></li>
+		</ul>
+		<a href="" id="btn_next">もういっかい</a>
+
+		<!-- message -->
+		<img src="/images/games/message_omedetou.png" id="img_message">
+		<img src="/images/animals/animal_mitsubachi.png" id="img_animal">
+
+		<!-- sound -->
+		<audio id="sound_wrong" preload="auto">
+			<source src="/sounds/Quiz-Wrong_Buzzer02-mp3/Quiz-Wrong_Buzzer02-1.mp3" type="audio/mp3">
+		</audio>
+		<audio id="sound_result_announce" preload="auto">
+			<source src="/sounds/Quiz-Results01-mp3/Quiz-Results01-1.mp3" type="audio/mp3">
+		</audio>
+	</div>
+</div>
+<script>
+	(function(){
+	    'use strict';
+
+	    //----------------------------
+		// const
+	    var OPERATOR = '+';
+		var ALL_CNT = 10;
+
+        //----------------------------
+	    // var
+	    var answer = document.getElementById('answer');
+	    var operator = document.getElementById('operator');
+	    var plus = document.getElementById('plus');
+	    var minus = document.getElementById('minus');
+	    var timer = document.getElementById('timer');
+	    var img_animal = document.getElementById('img_animal');
+	    var img_message = document.getElementById('img_message');
+
+	    var q1, q2;
+	    var now_cnt = 1;
+        // 画面サイズ
+        var windowWidth = $(window).width();
+
+  		// timer
+        var startTime = null;
+        var timer_id ;
+
+        var isPlay = false;
+
+		console.log(windowWidth);
+
+
+        //-----------------------
+	    // 初期化
+	    init();
+        // 設問セット
+        setQ();
+
+	    // 演算子
+		// +
+		plus.addEventListener('click', function(){
+		   OPERATOR = '+';
+		   plus.className = 'operator';
+		   minus.className = 'operator operator_disabled';
+		   operator.textContent = '+';
+		   setQ();
+		});
+		// -
+        minus.addEventListener('click', function(){
+            OPERATOR = '-';
+            minus.className = 'operator';
+            plus.className = 'operator operator_disabled';
+            operator.textContent = '-';
+            setQ();
+        });
+
+		// テンキーにイベントリスナ設定
+	    var numbers_li = document.getElementsByTagName('li');
+	    for(var i=0; i<numbers_li.length; i++){
+            numbers_li[i].addEventListener('click', tapNum, false);
+		}
+
+		// 正誤判定
+		function isCorrect(ans){
+	        var correct;
+            if(OPERATOR==='+'){
+                correct = q1+q2;
+            } else {
+                correct = q1-q2;
+            }
+            if(correct>=10 && ans.length===1){
+                // 正解が１０桁以上なのでまだ判定しない
+                return 999;
+			}
+            if(parseInt(ans) === correct){
+                // 正解
+                return true;
+            }
+            // 不正解
+            return false;
+		}
+
+        /**
+		 * テンキータップ時の処理
+		 *
+         */
+		function tapNum(){
+		    // テンキー値
+		    var ans = answer.textContent+this.getAttribute('data-num');
+		    // 消しゴム
+		    if(ans==='eraser'){
+                answer.textContent = '';
+		        return;
+			}
+		    answer.textContent = ans;
+			// タイマー
+		    if(isPlay===false){
+                startTime = Date.now();
+                // set timer
+                runTimer();
+                isPlay = true;
+			}
+
+		    //  正解！！
+			var res = isCorrect(ans);
+			if(res===true){
+                $('#img_animal').css('display', 'block');
+                $('#img_animal').animate({
+                   left: "0"
+					}, {
+                    duration: 700,
+                    complete: function () {
+                        if(now_cnt===ALL_CNT){
+                            // ALL_CNT になったら終了！----------------------------
+							// タイマーストップ
+                            clearInterval(timer_id);
+
+                            // おめでとう
+                            $('#img_message').css('display', 'block');
+                            $('#img_message').animate({top:"40px"},600);
+							// sound
+                            //document.getElementById("sound_result_announce").play();
+
+						} else {
+                            // 次の問題--------------------------
+                            setQ();
+                            $('#img_animal').css('display', 'none');
+							$("#img_animal").css("left", windowWidth);
+
+                            now_cnt++;
+                            document.getElementById('now_cnt').textContent = now_cnt;
+						}
+                    }
+                });
+                // 不正解！！
+			} else if(res===false){
+		        // 不正解だったら音を鳴らしてanswerをくりあ
+                document.getElementById("sound_wrong").play();
+                answer.textContent = '';
+			}
+		}
+
+		// init
+		function init(){
+            now_cnt = 1;
+            isPlay = false;
+
+            operator.textContent = OPERATOR;
+
+            document.getElementById('now_cnt').textContent = now_cnt;
+            document.getElementById('all_cnt').textContent = ALL_CNT;
+
+            timer.textContent = '0.00';
+            // img
+            img_message.style.left = '30px';
+            img_animal.style.left = '500px';
+            img_animal.style.top = '200px';
+            img_message.style.display = 'none';
+            img_animal.style.display = 'none';
+		}
+		// 設問セット
+		function setQ(){
+            q1 = 1+Math.floor(Math.random()*10);
+            q2 = 1+Math.floor(Math.random()*10);
+            // [-]のときは、q2の方が小さくなるように。
+            if(OPERATOR==='-' && q1<q2){
+                var tmp = q2;
+                q2 = q1;
+                q1 = tmp;
+            }
+
+            document.getElementById('q1').textContent = q1;
+            document.getElementById('q2').textContent = q2;
+
+            answer.textContent = '';
+		}
+        /*
+		 * タイマー
+		 */
+        function runTimer(){
+            timer.textContent=((Date.now()-startTime)/1000).toFixed(2);
+            timer_id = setTimeout(runTimer, 12);
+        }
+	})();
+</script>
+</body>
+</html>
+

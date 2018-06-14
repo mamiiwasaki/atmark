@@ -1,0 +1,268 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>___CONTENTS_NAME___</title>
+		___HEAD___
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<style>
+			html, body{
+				height: 100%;
+				user-select: none;
+				overflow: hidden;
+			}
+			#main{
+				height: 100%;
+			}
+			.container{
+				height: 100%;
+				display: flex;
+				justify-content: center; /*左右中央揃え*/
+				align-items: center;     /*上下中央揃え*/
+				overflow:hidden;
+				-webkit-user-select: none;
+			}
+			.field {
+				position:relative;
+				width:800px;
+				height:200px;
+				background-color: #FFF;
+				border: 1px solid black;
+				-webkit-user-select: none;
+				overflow:hidden;
+				left: 0;
+			}
+			.bg{
+				position:absolute;
+				top:159px;
+				width:100%;
+				height:100px;
+				background: url(./img/bgloop.png) repeat-x;
+				-webkit-user-select: none;
+			}
+			.char{
+				position:absolute;
+				left:10px;
+				top:110px;
+				width:70px;
+				height:47px;
+				background: url(./img/char.png);
+				background-size:cover;
+				z-index:9;
+				-webkit-user-select: none;
+			/*	border: 1px solid black;*/
+			}
+			.score{
+				position:absolute;
+				width: 100px;
+				height: 100px;
+				z-index:9;
+			/*	bordher: 1px solid black;*/
+			}
+			/* hi = 76*80 , lo = 76*120 */
+			.item1{
+				position:absolute;
+				width:45px;
+				height:60px;
+				top:130px;
+				left:300px;
+			/*	border: 1px solid black;*/
+				background: url(./img/hi.png);
+				background-size:cover;
+			}
+			.item2{
+				position:absolute;
+				width:45px;
+				height:30px;
+				top:160px;
+				left:600px;
+			/*	border: 1px solid black;*/
+				background: url(./img/lo.png);
+				background-size:cover;
+			}
+			.miss{
+				position:absolute;
+				width:100%;
+				height: 30px;
+				top:40px;
+			/*	border: 1px solid black;*/
+				font-size:40px;
+				visibility:hidden;
+			}
+		</style>
+	</head>
+	<body>
+	<!-- Header -->
+		<div id="header2">
+			<div id="nav-wrapper">
+				<!-- Nav -->
+				<nav id="nav">
+					___NAVI___
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main">
+			<div id="container" style="top:0;left:0;padding:0;margin:0;">
+				<div class="field" style="padding:0;margin:0;">
+					<div id="score" class="score">SCORE:0</div>
+					<div id="bg"    class="bg"  ></div>
+					<div id="char"  class="char"></div>
+					<div id="item1" class="item1"></div>
+					<div id="item2" class="item2"></div>
+					<div id="miss"  class="miss">しっぱいにゃー</div>
+				</div>
+			</div>
+		</div>
+</body>
+<script>
+// https://qiita.com/doxas/items/3aede5613881dc0272ef
+var	count = 0 ;
+var speed = 2.0 ;
+var score = 0 ;
+var run_item1 = false ;
+var item1pos = -100 ;
+var run_item2 = false ;
+var item2pos = -100 ;
+var in_miss = false ;
+
+
+/*
+ * 背景を更新
+ */
+var intv = setInterval("update_bg()", 10);
+
+function update_bg(){
+	//	background
+	count = count + speed ;
+	score += 1 ;
+
+	if((parseInt(count,10) % 1000) == 0){
+		speed += 0.3 ;
+	}
+
+	document.getElementById("score").innerHTML = "SCORE : " + parseInt(score,10) ;
+	document.getElementById("bg").style.backgroundPosition = -1*parseInt(count,10) + "px 0px" ;
+
+	//	char
+	var cys = parseInt(document.getElementById("char").style.top.replace("px","")) ;
+	var cye = cys + 49 ;
+	var cxs = 10 ;
+	var cxe = cxs + 72 ;
+
+	//	item1
+	var ixs = parseInt(document.getElementById("item1").style.left.replace("px" , ""));
+	var	ixe = ixs + 47 ;
+	if(cys > 110 &&  ( (ixs > cxs && ixs < cxe) || (ixe > cxs && ixe < cxe))){
+		// ぶつかったらエラー
+		document.getElementById("item1").style.border = "1px solid red" ;
+		document.getElementById("miss").style.visibility = "visible" ;
+		in_miss = true ;
+		clearInterval(intv);
+	}else{
+//		document.getElementById("item1").style.border = "1px solid black" ;
+	}
+
+	//	item2
+	var ixs = parseInt(document.getElementById("item2").style.left.replace("px" , ""));
+	var	ixe = ixs + 47 ;
+	if(cys > 115 &&  ( (ixs > cxs && ixs < cxe) || (ixe > cxs && ixe < cxe))){
+		// ぶつかったらエラー
+		document.getElementById("item2").style.border = "1px solid red" ;
+		document.getElementById("miss").style.visibility = "visible" ;
+		in_miss = true ;
+		clearInterval(intv);
+	}else{
+//		document.getElementById("item2").style.border = "1px solid black" ;
+	}
+
+	//	item1
+	var n1 = Math.round( Math.random()*10000 );
+
+	if( n1 < 100 && !run_item1 && item2pos < 500){
+		run_item1 = true ;
+		item1pos = 900 ;
+	}
+	if(run_item1){
+		item1pos -= speed  ;
+		if(item1pos < -80){
+			run_item1 = false ;
+		}
+	}
+	document.getElementById("item1").style.left = item1pos + "px"  ;
+
+	//	item2
+	var n2 = Math.round( Math.random()*10000 );
+	if( n2 < 100 && !run_item2 && item1pos < 700){
+		run_item2 = true ;
+		item2pos = 900 ;
+	}
+	if(run_item2){
+		item2pos -= speed  ;
+		if(item2pos < -80){
+			run_item2 = false ;
+		}
+	}
+	document.getElementById("item2").style.left = item2pos + "px"  ;
+}
+
+/*
+ * 猫を動かす
+ */
+/* character */
+var char_loc = 0 ;
+var char_touch = false ;
+var char_down  = false ;
+var char_yp    = 130 ;
+document.body.onmousedown = function(){ push(); }
+document.body.onmouseup   = function(){ rel();  }
+
+function push() {
+	char_touch = true ;
+	if(in_miss){
+		location.reload();
+	}
+}
+
+function rel() {
+	char_touch = false ;
+	char_down  = true ;
+}
+
+var obj_cnt = document.getElementById('container');
+
+obj_cnt.addEventListener('touchstart', function(event) {
+	push();
+}, false);
+obj_cnt.addEventListener('touchend', function(event) {
+	rel();
+}, false);
+
+
+
+setInterval("update_char()", 20);
+
+function update_char(){
+	//	jump up
+	if(char_touch && !char_down){
+		char_loc -= 1.5 ;
+		if(char_loc < -90){
+			char_down = true ;
+		}
+	}
+	if(char_down){
+		char_loc += 1.5 ;
+	}
+	if(char_loc >= 0)
+		char_loc = 0 ;
+
+	//	down limit
+	if(char_loc >= 0 && !char_touch){
+		char_down = false ;
+	}
+
+	//	set positon
+	document.getElementById("char").style.top = (char_yp + char_loc) + "px";
+}
+
+</script>
+</html>
