@@ -19,19 +19,15 @@
 				background-color: #464646;/* 背景画像が読み込まれる前に表示される背景のカラー */
 			}
 			#container{
-				width: 250px;
+				width: 230px;
 				margin: 30px auto 0;	/* 上30px, 中央寄せ */
 			}
 			.questions{
-				width: 250px;
+				width: 230px;
 				height: 100px;
 				background-image: url("/images/fukidashi/fukidashi06_2.png");
-				background-position: top;
-				background-size: 100% auto;
+				background-size: 230px 100px;
 				background-repeat: no-repeat;
-				padding:0;
-				margin: 0;
-				border: 1px solid #333;
 			}
 			.questions+.questions{
 				margin-top: 20px;
@@ -109,9 +105,18 @@
 					float: left;
 					padding-top: 30px;
 					padding-left: 5px;
-					background-image: url('/images/fukidashi/fukidashi06_2.png');
+					background-image: url('/images/fukidashi/square01.png');
 					background-size:200px;
 					background-repeat: no-repeat;
+				}
+				.q_1{
+					background-image: url('/images/fukidashi/square01.png');
+				}
+				.q_2{
+					background-image: url('/images/fukidashi/square02.png');
+				}
+				.q_3{
+					background-image: url('/images/fukidashi/square03.png');
 				}
 				.questions+.questions{
 					margin-left: 10px;
@@ -143,9 +148,9 @@
 		<!-- Main-->
 		<div id="main">
 			<div id="container" class="container">
-				<div class="questions"><div class="question_inner"></div></div>
-				<div class="questions"><div class="question_inner"></div></div>
-				<div class="questions"><div class="question_inner"></div></div>
+				<div class="questions q_1"><div class="question_inner"></div></div>
+				<div class="questions q_2"><div class="question_inner"></div></div>
+				<div class="questions q_3"><div class="question_inner"></div></div>
 			</div>
 		</div>
 	<!-- message -->
@@ -172,7 +177,6 @@
                     Array.prototype.forEach.call(document.getElementsByClassName('question_inner'), function(node, n){
 						node.textContent='';
                         // set
-                        // var elem = document.getElementsByTagName('div');
                         setNumbers(node, n===correct_no);
                     });
 				}
