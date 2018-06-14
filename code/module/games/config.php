@@ -12,6 +12,7 @@ function getMenu(){
 		<li><a href="othello.html">オセロ</a></li>
 		<li><a href="math.html">さんすう</a></li>
 		<li><a href="math_bird.html">バード</a></li>
+		<li><a href="tashiten.html">たしてん</a></li>
 		<li><a href="panel_game.html">まちがいさがし</a></li>
 		<li><a href="mogura.html">もぐらたたきゲーム</a></li>
 		<li><a href="memory.html">しんけいすいじゃく</a></li>

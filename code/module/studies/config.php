@@ -30,6 +30,7 @@ function getSubMenu(){
                 <li><a href="canvas.html">canvas</a></li>
                 <li><a href="linux.html">linux</a></li>
                 <li><a href="php.html">php</a></li>
+                <li><a href="javascript.html">js</a></li>
             </ul>
             <div style="clear: both;"></div>';
 }
